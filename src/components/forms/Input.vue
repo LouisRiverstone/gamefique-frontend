@@ -1,82 +1,70 @@
 <template>
-    <div class="mb-4">
-        <label :for="name" class="form-label">{{ label }}</label>
-        <input
+    <div class="form-floating mb-3">
+        <Field
             :name="name"
-            :id="name"
             :type="type"
-            :value="inputValue"
             :placeholder="placeholder"
-            @input="handleChange"
-            @blur="handleBlur"
-            class="form-control input"
-            :class="{ 'has-error': !!errorMessage }"
+            class="form-control form-control-lg form-input-custom"
+            autocomplete="off"
         />
-        <small v-show="errorMessage || meta.valid" class="text-danger fw-light">
-            {{ errorMessage || successMessage }}
-        </small>
+        <label class="form-label">{{ title }}</label>
+        <ErrorMessage :name="name" />
     </div>
 </template>
 
 <script lang="ts">
-import { useField } from "vee-validate";
+import { Field, ErrorMessage } from "vee-validate";
+import { v4 as uuidv4 } from "uuid";
 
 export default {
+    components: {
+        Field,
+        ErrorMessage,
+    },
     props: {
-        type: {
-            type: String,
-            default: "text",
-        },
-        value: {
-            type: String,
-            default: "",
-        },
         name: {
             type: String,
             required: true,
         },
-        label: {
+        type: {
             type: String,
-            required: true,
+            default: "text",
         },
         placeholder: {
             type: String,
-            required: false,
+            default: null,
         },
-        successMessage: {
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+        title: {
+            required: true,
             type: String,
-            default: "",
         },
     },
-    setup(props: any) {
-        const {
-            value: inputValue,
-            errorMessage,
-            handleBlur,
-            handleChange,
-            meta,
-        } = useField(props.name, undefined, {
-            initialValue: props.value,
-        });
-
-        return {
-            handleChange,
-            handleBlur,
-            errorMessage,
-            inputValue,
-            meta,
-        };
+    computed: {
+        id() {
+            return uuidv4();
+        },
     },
 };
 </script>
 
 <style scoped>
-.has-error {
-    border: 2px solid #dc3545 !important;
+.form-input-custom {
+    background-color: #e7e7e7;
+    border: 2px transparent;
+    font-weight: 700;
 }
-.input {
-    border-radius: 0px;
-    padding: 0.5rem;
-    border: 1px solid #ced4da;
+
+.form-label {
+    font-weight: 700;
+}
+
+.form-input-custom:focus {
+    background-color: #e7e7e7 !important;
+    border: 2px transparent;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0);
 }
 </style>

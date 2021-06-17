@@ -1,4 +1,4 @@
-# tcc-frontend
+# hello-world
 
 ## Project setup
 ```

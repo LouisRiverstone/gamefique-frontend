@@ -1,9 +1,16 @@
-import axios from "../../middleware/axios";
+import axios from "../../plugins/axios"
+import { AxiosPromise } from "axios"
 
-const PATH = "/auth";
+import Register from "../../interfaces/auth/register"
+import Login from "../../interfaces/auth/login"
+
+const PATH = `auth`
 
 export default {
-  register(data: Register) {
-    return axios.post(`${PATH}/register`, data);
+  register(data: Register): Promise<AxiosPromise> {
+    return axios.post(`${PATH}/register`, data)
   },
-};
+  login(data: Login): Promise<AxiosPromise> {
+    return axios.post(`${PATH}/register`, data)
+  }
+}

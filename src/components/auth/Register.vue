@@ -1,114 +1,148 @@
 <template>
-    <Form
-        @submit="onSubmit"
-        :validation-schema="schema"
-        class="container"
-        ref="form"
-    >
-        <InputField
-            name="first_name"
-            type="text"
-            label="Nome"
-            placeholder="Ex. João"
-        />
-        <InputField
-            name="last_name"
-            type="text"
-            label="Sobrenome"
-            placeholder="Ex. de Oliveira Camargo"
-        />
-        <InputField
-            name="email"
-            type="email"
-            label="E-mail"
-            placeholder="Ex. joao.oliveira@email.com"
-        />
+    <div class="register">
+        <div class="row h-100">
+            <div class="col-sm-12 align-self-center">
+                <div class="row mb-3">
+                    <div class="mt-5 mb-5">
+                        <h2>Registro</h2>
+                    </div>
+                    <div>
+                        <Form
+                            @submit="onSubmit"
+                            :validation-schema="schema"
+                            class="container"
+                        >
+                            <Input
+                                name="first_name"
+                                placeholder="Nome"
+                                title="Nome"
+                            />
+                            <Input
+                                name="last_name"
+                                placeholder="Sobrenome"
+                                title="Sobrenome"
+                            />
+                            <Input
+                                name="email"
+                                type="email"
+                                placeholder="Email"
+                                title="Email"
+                            />
+                            <Input
+                                name="password"
+                                type="password"
+                                placeholder="Senha"
+                                title="Senha"
+                            />
+                            <Input
+                                name="password_confirm"
+                                type="password"
+                                placeholder="Confirmar Senha"
+                                title="Confirmar Senha"
+                            />
+                            <DataList
+                                name="formation_courses_id"
+                                title="Curso de Formação"
+                                placeholder="Curso de Formação"
+                                :endpoint="api.formation.course.get"
+                                fieldName="name"
+                            />
+                            <DataList
+                                name="formation_institutes_id"
+                                title="Instituição de Formação"
+                                placeholder="Instituição de Formação"
+                                :endpoint="api.formation.institute.get"
+                                fieldName="name"
+                            />
 
-        <InputField name="password" type="password" label="Senha" />
+                            <DataList
+                                name="school_id"
+                                title="Escola de Atuação"
+                                placeholder="Escola de Atuação"
+                                :endpoint="api.school.get"
+                                fieldName="name"
+                            />
 
-        <InputField
-            name="confirm_password"
-            type="password"
-            label="Confirmar Senha"
-        />
-
-        <InputFieldDataList
-            name="formation_institutes_id"
-            label="Instituição de Formação"
-            placeholder="Ex. Instituto Federal De Ciências e Tecnologias de Brasília"
-            :endpoint="api.formation.institute.get"
-            fieldName="name"
-        />
-
-        <InputFieldDataList
-            name="formation_courses_id"
-            label="Curso de Formação"
-            placeholder="Ex. Licenciatura em Computação"
-            :endpoint="api.formation.course.get"
-            fieldName="name"
-        />
-
-        <div class="row mt-4">
-            <div class="d-flex justify-content-evenly">
-                <button type="button" class="btn text-primary">Logar</button>
-                <button class="btn btn-lg btn-outline-success" type="submit">
-                    Cadastrar
-                </button>
+                            <Button type="submit" name="Cadastrar" />
+                        </Form>
+                    </div>
+                </div>
             </div>
         </div>
-    </Form>
+    </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Form } from "vee-validate";
-import * as Yup from "yup";
-import { pt } from "yup-locale-pt";
-import InputField from "../forms/Input.vue";
-import InputFieldDataList from "../forms/Input-DataList.vue";
-import api from "../../api";
+import Input from "@/components/forms/Input.vue";
+import Button from "@/components/forms/Button.vue";
+import DataList from "@/components/forms/DataList.vue";
+import * as yup from "yup";
 
-Yup.setLocale(pt);
+import api from "@/api";
+import { AnyObject } from "yup/lib/types";
+
 export default {
-    name: "Register",
     components: {
-        InputField,
-        InputFieldDataList,
+        Button,
         Form,
+        Input,
+        DataList,
     },
-    setup() {
-        async function onSubmit(values, actions) {
-            try {
-                const { data } = await api.auth.register(values);
-            } catch (error) {
-                if (error.response?.data?.errors) {
-                    error.response.data.errors.map((e) => {
-                        actions.setFieldError(e.field, e.message);
-                    });
-                }
-            }
-        }
-
-        const schema = Yup.object().shape({
-            first_name: Yup.string().min(3).required(),
-            last_name: Yup.string().min(3).required(),
-            email: Yup.string().email().required(),
-            password: Yup.string().min(6).required(),
-            confirm_password: Yup.string()
-                .required()
-                .oneOf([Yup.ref("password")], "Senhas não são iguais"),
+    data() {
+        const schema = yup.object({
+            first_name: yup
+                .string()
+                .required("Você precisa informar seu primeiro nome"),
+            last_name: yup
+                .string()
+                .required("Você precisa informar seu sobrenome"),
+            email: yup
+                .string()
+                .required("Você precisa informar um email")
+                .email("Você precisa informar um email válido"),
+            password: yup
+                .string()
+                .required("Você precisa informar uma senha")
+                .min(8, "Sua senha deve ter no mínimo 8 caractéres"),
+            password_confirm: yup
+                .string()
+                .oneOf(
+                    [yup.ref("password"), null],
+                    "As Senhas Estão Diferentes"
+                ),
+            formation_courses_id: yup
+                .number()
+                .required("Você precisa informar seu curso de Formação"),
+            formation_institutes_id: yup
+                .number()
+                .required("Você precisa informar sua Instituição de Formação"),
+            school_id: yup
+                .number()
+                .required("Você precisa informar sua Escola de Atuação"),
         });
 
         return {
-            onSubmit,
             schema,
             api,
         };
+    },
+    methods: {
+        onSubmit(values: AnyObject) {
+            ///
+        },
     },
 };
 </script>
 
 <style scoped>
-.btn {
-    border-radius: 0px !important;
+h2 {
+    font-weight: 700;
+}
+.register {
+    height: 100vh;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color: #fff;
 }
 </style>

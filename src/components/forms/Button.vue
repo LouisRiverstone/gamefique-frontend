@@ -1,12 +1,29 @@
 <template>
-    <button class="btn btn-lg btn-outline-primary" type="submit">
-        Cadastrar
+    <button
+        :type="type"
+        :disabled="disabled"
+        class="btn btn-outline-secondary btn-lg mt-3"
+    >
+        {{ name }}
     </button>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-    setup() {},
+    props: {
+        type: {
+            required: true,
+            type: String,
+        },
+        name: {
+            required: true,
+            type: String,
+        },
+        disabled: {
+            default: false,
+            type: Boolean,
+        },
+    },
 };
 </script>
 
