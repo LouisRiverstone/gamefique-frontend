@@ -63,7 +63,7 @@
                                 fieldName="name"
                             />
 
-                            <Button type="submit" name="Cadastrar" />
+                            <Button type="submit">Registrar</Button>
                         </Form>
                     </div>
                 </div>

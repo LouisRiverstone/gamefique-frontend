@@ -1,0 +1,8 @@
+======= Expressions
+
+($eval->evaluate($e['expression'])
+
+-> coeficiente de cubagem (Aereo, Rodoviario)
+-> modalidade
+-> valor taxa de origem
+-> valor da taxa de destino

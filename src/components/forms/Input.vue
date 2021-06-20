@@ -8,7 +8,7 @@
             autocomplete="off"
         />
         <label class="form-label">{{ title }}</label>
-        <ErrorMessage :name="name" />
+        <ErrorMessage :name="name" class="error" />
     </div>
 </template>
 
@@ -66,5 +66,11 @@ export default {
     background-color: #e7e7e7 !important;
     border: 2px transparent;
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0);
+}
+
+.error {
+    font-weight: 700;
+    font-size: 12px;
+    color: #e51400;
 }
 </style>

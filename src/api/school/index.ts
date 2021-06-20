@@ -1,11 +1,10 @@
+import { AxiosPromise } from "axios"
 import axios from "../../plugins/axios"
 
 const PATH = "/schools";
 
 export default {
-  get(name: string) {
-    if (name.length > 4) {
-      return axios.get(`${PATH}`, { params: { name } });
-    }
+  get(name: string): Promise<AxiosPromise> | null {
+    return axios.get(`${PATH}`, { params: { name } });
   },
 }

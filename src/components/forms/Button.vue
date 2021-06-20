@@ -2,20 +2,18 @@
     <button
         :type="type"
         :disabled="disabled"
-        class="btn btn-outline-secondary btn-lg mt-3"
+        class="btn btn-outline-secondary btn-lg mt-3 font"
     >
-        {{ name }}
+        <slot></slot>
     </button>
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from "vue";
+
+export default defineComponent({
     props: {
         type: {
-            required: true,
-            type: String,
-        },
-        name: {
             required: true,
             type: String,
         },
@@ -24,8 +22,12 @@ export default {
             type: Boolean,
         },
     },
-};
+});
 </script>
 
-<style>
+<style scoped>
+.font {
+    font-weight: 500;
+    font-size: 14px;
+}
 </style>
