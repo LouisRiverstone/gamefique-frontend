@@ -7,7 +7,6 @@ export default {
   async loadUser({ commit }: any): Promise<Error | void> {
     try {
       const { data } = await api.auth.user();
-
       localstorage_api.set('user', data);
       commit('setUser', data)
     } catch (error) {
@@ -31,7 +30,10 @@ export default {
 
       commit('setToken', data);
       localstorage_api.set('token', data)
-      dispatch('loadUser');
+
+      setTimeout(() => {
+        dispatch('loadUser');
+      }, 200)
     } catch (error) {
       throw new Error(error);
     }
