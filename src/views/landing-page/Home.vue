@@ -1,11 +1,11 @@
 <template>
     <div class="home">
-        <h1>Teste 2</h1>
+        <h1>Landing Page</h1>
     </div>
 </template>
 
 <script lang="ts">
 export default {
-  components: {},
+    components: {},
 };
 </script>

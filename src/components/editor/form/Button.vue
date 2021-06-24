@@ -1,15 +1,5 @@
 <template>
-    <button
-        :type="type"
-        :disabled="disabled"
-        class="btn btn-outline-secondary btn-lg mt-3 font"
-    >
-        <span
-            class="spinner-border spinner-border-sm"
-            role="status"
-            aria-hidden="true"
-            v-show="loading"
-        ></span>
+    <button type="button" :disabled="disabled" class="btn btn-editor font">
         <slot></slot>
     </button>
 </template>
@@ -37,7 +27,7 @@ export default defineComponent({
 
 <style scoped>
 .font {
-    font-weight: 500;
-    font-size: 14px;
+    font-weight: 700;
+    font-size: 24px;
 }
 </style>

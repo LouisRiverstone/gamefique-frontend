@@ -44,7 +44,7 @@ export default {
         },
     },
     computed: {
-        id() {
+        id(): string {
             return uuidv4();
         },
     },

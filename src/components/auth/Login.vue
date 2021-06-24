@@ -25,7 +25,9 @@
                                 title="Senha"
                             />
 
-                            <Button type="submit">Logar</Button>
+                            <Button type="submit" :loading="loading"
+                                >Logar</Button
+                            >
                         </Form>
                     </div>
                     <small class="error">{{ error }}</small>
@@ -69,16 +71,21 @@ export default defineComponent({
         return {
             schema,
             error: "",
+            loading: false,
         };
     },
     methods: {
         async onSubmit(data: Login, event: any) {
             try {
+                this.loading = true;
                 this.error = "";
+
                 await this.$store.dispatch("login", data);
                 this.$router.push({ name: "PostList" });
             } catch (error) {
                 this.error = error.response?.data;
+            } finally {
+                this.loading = false;
             }
         },
     },
