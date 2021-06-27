@@ -126,7 +126,7 @@ export default defineComponent({
                 if (text != this.searching_query) {
                     this.showList = true;
                 }
-                if (text.length > 3) {
+                if (text.length >= 4) {
                     try {
                         this.loading = true;
                         const { data } = await this.endpoint(text);
