@@ -1,15 +1,53 @@
 <template>
-    <Post v-for="(post, i) in 10" :isPreview="true" :key="i" />
+    <section>
+        <Preview
+            v-for="(post, i) in posts"
+            :post="post"
+            :isPreview="true"
+            :key="i"
+        />
+    </section>
 </template>
 
-<script>
-import Post from "@/components/posts/Post.vue";
+<script lang="ts">
+import { defineComponent } from "vue";
+import Preview from "@/components/posts/Preview.vue";
+import api from "@/api/index";
 
-export default {
+export default defineComponent({
     components: {
-        Post,
+        Preview,
     },
-};
+    data() {
+        return {
+            posts: [],
+            meta: {
+                first_page: 1,
+                current_page: 1,
+                total: 1,
+            },
+        };
+    },
+    methods: {
+        async getPosts() {
+            try {
+                this.$emit("loading-show");
+                const { data, meta } = (
+                    await api.post.list(this.meta.current_page)
+                ).data;
+                this.meta = meta;
+                this.posts = data;
+            } catch (error) {
+                console.error(error);
+            } finally {
+                this.$emit("loading-hide");
+            }
+        },
+    },
+    mounted() {
+        this.getPosts();
+    },
+});
 </script>
 
 <style>

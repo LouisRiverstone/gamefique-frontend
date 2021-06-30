@@ -6,7 +6,7 @@
             <FloatingMenu :editor="editor" />
         </div>
         <div class="row">
-            <editor-content :editor="editor" class="editor-content" />
+            <EditorContent :editor="editor" class="editor-content" />
         </div>
     </div>
 </template>

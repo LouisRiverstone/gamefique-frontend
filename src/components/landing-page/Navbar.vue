@@ -26,17 +26,16 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#whyPlataform">Sobre</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#prices">Valores</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#footer">Contato</a>
-                    </li>
                     <li class="nav-item nav-button-blue">
-                        <a class="nav-link" href="#prices">Veja a Plataforma</a>
+                        <a
+                            class="nav-link"
+                            href="#"
+                            @click.prevent="$router.push({ name: 'PostList' })"
+                            >Veja a Plataforma</a
+                        >
                     </li>
                     <li class="nav-item nav-button-green">
-                        <a class="nav-link" href="#prices">Registre-se</a>
+                        <a class="nav-link" href="#">Registre-se</a>
                     </li>
                 </ul>
             </div>

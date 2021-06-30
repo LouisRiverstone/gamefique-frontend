@@ -77,9 +77,14 @@
 
                 <div>
                     <transition name="fade">
-                        <div v-show="tabActive == 'editor'" class="row">
-                            <PostEditor />
-                        </div>
+                        <nav>
+                            <div v-show="tabActive == 'editor'" class="row">
+                                <PostEditor />
+                            </div>
+                            <div v-show="tabActive == 'snippets'" class="row">
+                                <SnippetsEditor />
+                            </div>
+                        </nav>
                     </transition>
                 </div>
             </div>
@@ -91,6 +96,7 @@
 import { defineComponent } from "vue";
 
 import PostEditor from "@/components/posts/PostEditor.vue";
+import SnippetsEditor from "@/components/snippets/SnippetsEditor.vue";
 import Input from "@/components/forms/Input.vue";
 import Button from "@/components/forms/Button.vue";
 
@@ -100,6 +106,7 @@ import { Form } from "vee-validate";
 export default defineComponent({
     components: {
         PostEditor,
+        SnippetsEditor,
         Input,
         Button,
     },

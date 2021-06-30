@@ -20,10 +20,10 @@
                                 </div>
                                 <div class="">
                                     <div class="row name-micro">
-                                        Luiz Gustavo
+                                        {{ post.user.first_name }}
                                     </div>
                                     <div class="row subs-micro">
-                                        Licenciatura em Computação
+                                        {{ post.user.formation_courses.name }}
                                     </div>
                                 </div>
                             </div>
@@ -36,7 +36,7 @@
                     <div class="row mt-3">
                         <div class="row">
                             <div class="row">
-                                <h2>Título</h2>
+                                <h2>{{ post.title }}</h2>
                             </div>
                         </div>
 
@@ -60,54 +60,7 @@
                         <div class="row mt-3">
                             <div class="col-12">
                                 <div class="container text-start">
-                                    <p>
-                                        Lorem ipsum dolor sit amet consectetur,
-                                        adipisicing elit. Voluptates, sequi hic
-                                        in placeat atque accusantium modi ut
-                                        nesciunt ad autem voluptatem beatae odit
-                                        ea recusandae facere officiis dolorum
-                                        minima. Laborum.
-                                    </p>
-                                    <p>
-                                        Lorem ipsum dolor sit amet consectetur,
-                                        adipisicing elit. Voluptates, sequi hic
-                                        in placeat atque accusantium modi ut
-                                        nesciunt ad autem voluptatem beatae odit
-                                        ea recusandae facere officiis dolorum
-                                        minima. Laborum.
-                                    </p>
-                                    <p>
-                                        Lorem ipsum dolor sit amet consectetur,
-                                        adipisicing elit. Voluptates, sequi hic
-                                        in placeat atque accusantium modi ut
-                                        nesciunt ad autem voluptatem beatae odit
-                                        ea recusandae facere officiis dolorum
-                                        minima. Laborum.
-                                    </p>
-                                    <p>
-                                        Lorem ipsum dolor sit amet consectetur,
-                                        adipisicing elit. Voluptates, sequi hic
-                                        in placeat atque accusantium modi ut
-                                        nesciunt ad autem voluptatem beatae odit
-                                        ea recusandae facere officiis dolorum
-                                        minima. Laborum.
-                                    </p>
-                                    <p>
-                                        Lorem ipsum dolor sit amet consectetur,
-                                        adipisicing elit. Voluptates, sequi hic
-                                        in placeat atque accusantium modi ut
-                                        nesciunt ad autem voluptatem beatae odit
-                                        ea recusandae facere officiis dolorum
-                                        minima. Laborum.
-                                    </p>
-                                    <p>
-                                        Lorem ipsum dolor sit amet consectetur,
-                                        adipisicing elit. Voluptates, sequi hic
-                                        in placeat atque accusantium modi ut
-                                        nesciunt ad autem voluptatem beatae odit
-                                        ea recusandae facere officiis dolorum
-                                        minima. Laborum.
-                                    </p>
+                                    <div v-html="post.html"></div>
                                 </div>
                             </div>
                         </div>
@@ -126,60 +79,6 @@
                                 <span class="badge rounded-pill bg-primary"
                                     >Tag 3</span
                                 >
-                            </div>
-                        </div>
-
-                        <div v-if="isPreview">
-                            <div class="mb-3">
-                                <div class="description"></div>
-                            </div>
-
-                            <div class="row mb-5 mt-3">
-                                <div class="d-flex justify-content-evenly">
-                                    <Button
-                                        type="button"
-                                        @click.prevent="
-                                            $router.push({
-                                                name: 'Post',
-                                                params: { id: 1 },
-                                            })
-                                        "
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="14"
-                                            height="14"
-                                            fill="currentColor"
-                                            class="bi bi-chat"
-                                            viewBox="0 0 16 16"
-                                        >
-                                            <path
-                                                d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z"
-                                            />
-                                        </svg>
-                                        12 Comentários
-                                    </Button>
-                                    <Button type="button">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="14"
-                                            height="14"
-                                            fill="currentColor"
-                                            class="bi bi-box-arrow-in-up-left"
-                                            viewBox="0 0 16 16"
-                                        >
-                                            <path
-                                                fill-rule="evenodd"
-                                                d="M9.636 13.5a.5.5 0 0 1-.5.5H2.5A1.5 1.5 0 0 1 1 12.5v-10A1.5 1.5 0 0 1 2.5 1h10A1.5 1.5 0 0 1 14 2.5v6.636a.5.5 0 0 1-1 0V2.5a.5.5 0 0 0-.5-.5h-10a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h6.636a.5.5 0 0 1 .5.5z"
-                                            />
-                                            <path
-                                                fill-rule="evenodd"
-                                                d="M5 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H6.707l8.147 8.146a.5.5 0 0 1-.708.708L6 6.707V10.5a.5.5 0 0 1-1 0v-5z"
-                                            />
-                                        </svg>
-                                        Leia Mais
-                                    </Button>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -204,13 +103,18 @@
                             </div>
                         </div>
                         <div class="row mt-3 pb-5">
-                            <span class="name">Luiz Gustavo</span>
-                            <span class="subs">Licenciatura em Computação</span>
+                            <span class="name">
+                                {{ post.user.first_name }}</span
+                            >
                             <span class="subs">
-                                Instituto Federal de Ciencias e Tecnologias de
-                                Brasíla
+                                {{ post.user.formation_courses.name }}</span
+                            >
+                            <span class="subs">
+                                {{ post.user.formation_institute.name }}
                             </span>
-                            <span class="subs">Ced 06</span>
+                            <span class="subs">
+                                {{ post.user.school.name }}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -221,16 +125,12 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Button from "@/components/forms/Button.vue";
 
 export default defineComponent({
-    components: {
-        Button,
-    },
     props: {
-        isPreview: {
-            type: Boolean,
-            default: true,
+        post: {
+            type: Object,
+            required: true,
         },
     },
     mounted() {

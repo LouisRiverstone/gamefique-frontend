@@ -1,5 +1,5 @@
 <template>
-    <section v-for="(p, i) in 5" :key="i">
+    <section v-for="(comment, i) in comments" :key="i">
         <div class="container card-post pt-3 mb-5">
             <div class="row mb-3">
                 <div class="d-flex ms-4">
@@ -10,9 +10,11 @@
                         />
                     </div>
                     <div class="">
-                        <div class="row name-micro">Luiz Gustavo</div>
+                        <div class="row name-micro">
+                            {{ comment.user.first_name }}
+                        </div>
                         <div class="row subs-micro">
-                            Licenciatura em Computação
+                            {{ comment.user.formation_courses.name }}
                         </div>
                     </div>
                 </div>
@@ -23,18 +25,16 @@
             <div class="container mt-2 mb-2">
                 <div class="container text-start">
                     <p>
-                        Lorem ipsum dolor, sit amet consectetur adipisicing
-                        elit. Distinctio quas alias inventore eos perferendis.
-                        Ea porro qui culpa sunt hic cum recusandae asperiores
-                        temporibus laudantium, aliquid possimus inventore
-                        perferendis aut!
+                        {{ comment.comment }}
                     </p>
                 </div>
             </div>
 
             <div class="row pe-5">
                 <div class="d-flex justify-content-end">
-                    <p class="subs-micro">21/10/2021 21:30</p>
+                    <p class="subs-micro">
+                        {{ getDate(comment.created_at, comment.updated_at) }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -42,7 +42,27 @@
 </template>
 
 <script lang="ts">
-export default {};
+import moment from "moment";
+
+export default {
+    props: {
+        comments: {
+            type: Array,
+            required: true,
+        },
+    },
+    methods: {
+        getDate(created_at: string, updated_at: string): string {
+            if (created_at != updated_at) {
+                return `Atualizado em ${moment(updated_at).format(
+                    "dd/mm/yyyy hh:mm"
+                )}`;
+            }
+
+            return `Criado em ${moment(created_at).format("DD/MM/YYYY HH:mm")}`;
+        },
+    },
+};
 </script>
 
 <style scoped>
