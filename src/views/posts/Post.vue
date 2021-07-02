@@ -1,8 +1,13 @@
 <template>
     <section>
-        <div v-if="post">
-            <Post :post="post" :isPreview="false" />
-            <Comments :comments="post.comments" />
+        <div v-if="post.id">
+            <Post :post="post" />
+            <Comments
+                :comments="post.comments"
+                @pushComment="pushComment"
+                @updateComment="updateComment"
+                @deleteComment="deleteComment"
+            />
         </div>
     </section>
 </template>
@@ -13,6 +18,7 @@ import Post from "@/components/posts/Post.vue";
 import Comments from "@/components/posts/Comments.vue";
 
 import api from "@/api";
+import CommentInterface from "@/interfaces/comment/Comment";
 
 export default defineComponent({
     components: {
@@ -21,7 +27,7 @@ export default defineComponent({
     },
     data() {
         return {
-            post: null,
+            post: { id: null, comments: [] as Array<CommentInterface> },
         };
     },
     methods: {
@@ -35,6 +41,25 @@ export default defineComponent({
             } finally {
                 this.$emit("loading-hide");
             }
+        },
+        pushComment(comment: CommentInterface) {
+            this.post.comments = [comment, ...this.post.comments];
+        },
+        updateComment(comment: CommentInterface) {
+            this.post.comments = this.post.comments.map((cmt) => {
+                if (comment.id === cmt.id) {
+                    cmt = comment;
+                }
+
+                return cmt;
+            });
+        },
+        deleteComment(comment: CommentInterface) {
+            this.post.comments.forEach((cmt, index) => {
+                if (comment.id === cmt.id) {
+                    this.post.comments.splice(index, 1);
+                }
+            });
         },
     },
     mounted() {

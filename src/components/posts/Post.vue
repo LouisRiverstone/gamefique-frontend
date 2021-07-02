@@ -42,7 +42,7 @@
 
                         <div class="row mb-4">
                             <div class="d-flex justify-content-center">
-                                <nav class="nav mt-3" v-if="!isPreview">
+                                <nav class="nav mt-3">
                                     <a
                                         class="nav-link active"
                                         aria-current="page"
@@ -89,7 +89,6 @@
                     col-sm-12 col-md-12 col-lg-3
                     offset-lg-1
                     card-post card-lateral
-                    sticky-top
                 "
             >
                 <div class="d-none d-lg-block card-lateral">
@@ -140,9 +139,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.post {
-    background-color: #fff;
-}
 .h2 {
     font-weight: 700;
 }
@@ -154,7 +150,7 @@ export default defineComponent({
     font-size: 12px;
 }
 .card-post {
-    background-color: #ededed;
+    background-color: #fff;
     border: 2px transparent;
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0);
 }

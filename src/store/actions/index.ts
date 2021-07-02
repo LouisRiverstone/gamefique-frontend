@@ -15,10 +15,11 @@ export default {
   },
   async register({ commit, dispatch }: any, registerData: Register) {
     try {
-      const { token } = (await api.auth.register(registerData)).data;
+      const { data } = await api.auth.register(registerData);
 
-      commit('setToken', token);
-      localstorage_api.set('token', token);
+      commit('setToken', data);
+      localstorage_api.set('token', data)
+
       dispatch('loadUser');
     } catch (error) {
       console.error(error)
@@ -31,11 +32,13 @@ export default {
       commit('setToken', data);
       localstorage_api.set('token', data)
 
-      setTimeout(() => {
-        dispatch('loadUser');
-      }, 200)
+      dispatch('loadUser');
     } catch (error) {
       throw new Error(error);
     }
+  },
+  logout() {
+    localstorage_api.remove('token');
+    localstorage_api.remove('user');
   }
 }

@@ -4,29 +4,30 @@ import { setupInterceptorsTo } from '../middleware/interceptors';
 import localStorage_api from '@/utils/local-storage';
 import Token from '@/interfaces/store/Token';
 
-const buildHeaders = () => {
+function auth() {
   const gettedToken = localStorage_api.get('token') as Token;
   let token = "";
 
   if (gettedToken) {
     token = `${gettedToken.type} ${gettedToken.token}`
   }
-
-  return {
-    'Content-Type': 'application/json',
-    "Accept": 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, HEAD, OPTIONS',
-    'Authorization': token
-  }
+  return token
 }
-
 
 const axios = setupInterceptorsTo(
   _axios.create({
     baseURL: 'http://localhost:3333/api/v1',
     timeout: 10000,
-    headers: buildHeaders(),
+    transformRequest: [function (data, headers) {
+      headers['Authorization'] = auth()
+      return JSON.stringify(data)
+    }],
+    headers: {
+      'Content-Type': 'application/json',
+      "Accept": 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, HEAD, OPTIONS',
+    },
   }),
 );
 

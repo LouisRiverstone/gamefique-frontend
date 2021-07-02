@@ -1,11 +1,6 @@
 <template>
     <section>
-        <Preview
-            v-for="(post, i) in posts"
-            :post="post"
-            :isPreview="true"
-            :key="i"
-        />
+        <Preview v-for="(post, i) in posts" :post="post" :key="i" />
     </section>
 </template>
 

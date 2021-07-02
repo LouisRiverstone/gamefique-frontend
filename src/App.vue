@@ -1,14 +1,12 @@
 <template>
     <div>
-        <div class="spacement">
-            <Navbar v-if="$route.name != 'Home'" />
-        </div>
-        <div>
+        <Navbar v-if="$route.name != 'Home'" />
+        <transition name="fade">
             <router-view
                 @loading-show="loader.show()"
                 @loading-hide="loader.hide()"
             />
-        </div>
+        </transition>
         <Loader ref="loader" />
     </div>
 </template>
@@ -41,7 +39,18 @@ export default defineComponent({
     text-align: center;
     color: #2c3e50;
 }
-.spacement {
-    margin-bottom: 70px;
+
+body {
+    background-color: #f1f1f1 !important;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 1s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>
