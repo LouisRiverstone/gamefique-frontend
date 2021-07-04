@@ -13,13 +13,21 @@
                         <div class="row mb-3">
                             <div class="d-flex ms-4">
                                 <div class="me-4">
-                                    <img
-                                        src="https://picsum.photos/500/500"
+                                    <Photo
+                                        :photo="post.user.photo"
                                         class="rounded microphoto"
                                     />
                                 </div>
                                 <div class="">
-                                    <div class="row name-micro">
+                                    <div
+                                        class="row name-micro"
+                                        @click.prevent="
+                                            $router.push({
+                                                name: 'ProfileOthers',
+                                                params: { id: post.user.id },
+                                            })
+                                        "
+                                    >
                                         {{ post.user.first_name }}
                                     </div>
                                     <div class="row subs-micro">
@@ -95,14 +103,22 @@
                     <div class="container mt-3">
                         <div class="row">
                             <div class="col-12">
-                                <img
-                                    src="https://picsum.photos/500/500"
+                                <Photo
+                                    :photo="post.user.photo"
                                     class="rounded mx-auto d-block photo"
                                 />
                             </div>
                         </div>
                         <div class="row mt-3 pb-5">
-                            <span class="name">
+                            <span
+                                class="name"
+                                @click.prevent="
+                                    $router.push({
+                                        name: 'ProfileOthers',
+                                        params: { id: post.user.id },
+                                    })
+                                "
+                            >
                                 {{ post.user.first_name }}</span
                             >
                             <span class="subs">
@@ -124,6 +140,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import Photo from "@/components/utils/Photo.vue";
 
 export default defineComponent({
     props: {
@@ -131,6 +148,9 @@ export default defineComponent({
             type: Object,
             required: true,
         },
+    },
+    components: {
+        Photo,
     },
     mounted() {
         console.log(this.$router);
@@ -144,6 +164,7 @@ export default defineComponent({
 }
 .name {
     font-weight: 700;
+    cursor: pointer;
 }
 .subs {
     font-weight: 200;

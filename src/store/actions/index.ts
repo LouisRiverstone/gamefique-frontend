@@ -37,6 +37,22 @@ export default {
       throw new Error(error);
     }
   },
+  async update({ commit, dispatch }: any, updateData: any) {
+    try {
+      const updated = await api.auth.update(updateData);
+      dispatch('loadUser');
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  async photo({ commit, dispatch }: any, image: File) {
+    try {
+      const photo = await api.auth.photo(image);
+      await dispatch('loadUser');
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
   logout() {
     localstorage_api.remove('token');
     localstorage_api.remove('user');

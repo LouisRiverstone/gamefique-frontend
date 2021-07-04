@@ -73,6 +73,8 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
+
 import { Form } from "vee-validate";
 import Input from "@/components/forms/Input.vue";
 import Button from "@/components/forms/Button.vue";
@@ -80,9 +82,9 @@ import DataList from "@/components/forms/DataList.vue";
 import * as yup from "yup";
 
 import api from "@/api";
-import { AnyObject } from "yup/lib/types";
+import Register from "@/interfaces/auth/register";
 
-export default {
+export default defineComponent({
     components: {
         Button,
         Form,
@@ -128,11 +130,16 @@ export default {
         };
     },
     methods: {
-        onSubmit(values: AnyObject) {
-            ///
+        async onSubmit(data: Register) {
+            try {
+                await this.$store.dispatch("register", data);
+                this.$router.push({ name: "PostList" });
+            } catch (error) {
+                console.error(error);
+            }
         },
     },
-};
+});
 </script>
 
 <style scoped>

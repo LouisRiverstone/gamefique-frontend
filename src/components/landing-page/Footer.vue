@@ -1,45 +1,41 @@
 <template>
     <div
-        class="row d-flex justify-content-center align-items-center"
+        class="d-flex flex-column justify-content-center align-items-center"
         id="footer"
     >
-        <div
-            class="d-flex flex-column justify-content-center align-items-center"
-        >
-            <div class="row">
+        <div class="row">
+            <div
+                class="
+                    col-md-12
+                    d-flex
+                    flex-column
+                    justify-content-center
+                    align-items-center
+                    mb-5
+                "
+            >
+                <span>© 2021 Plataforma</span>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Autem molestiae fugiat reprehenderit voluptatibus, beatae
+                    tempora.
+                    <br />
+                    Todas as bases imagens dessa landing page foram retiradas de
+                    Unsplash
+                </p>
                 <div
                     class="
+                        terms
                         col-md-12
                         d-flex
-                        flex-column
+                        flex-row
                         justify-content-center
-                        align-items-center
-                        mb-5
                     "
                 >
-                    <span>© 2021 Plataforma</span>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Autem molestiae fugiat reprehenderit voluptatibus,
-                        beatae tempora.
-                        <br />
-                        Todas as bases imagens dessa landing page foram
-                        retiradas de Unsplash
-                    </p>
-                    <div
-                        class="
-                            terms
-                            col-md-12
-                            d-flex
-                            flex-row
-                            justify-content-center
-                        "
-                    >
-                        <div>
-                            <a href="#" target="_blank"
-                                >Termo de Uso & Politica de Privacidade.</a
-                            >
-                        </div>
+                    <div>
+                        <a href="#" target="_blank"
+                            >Termo de Uso & Politica de Privacidade.</a
+                        >
                     </div>
                 </div>
             </div>

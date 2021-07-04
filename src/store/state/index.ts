@@ -4,7 +4,7 @@ import localStorage_api from '@/utils/local-storage';
 
 export default {
   user: {
-    email: localStorage_api.getValue('user', 'id'),
+    email: localStorage_api.getValue('user', 'email'),
     first_name: localStorage_api.getValue('user', 'first_name'),
     formation_courses: localStorage_api.getValue('user', 'formation_courses'),
     formation_courses_id: localStorage_api.getValue('user', 'formation_courses_id'),
@@ -15,6 +15,7 @@ export default {
     photo: localStorage_api.getValue('user', 'photo'),
     photo_cover: localStorage_api.getValue('user', 'photo_cover'),
     school_id: localStorage_api.getValue('user', 'school_id'),
+    school: localStorage_api.getValue('user', 'school')
   } as User,
   token: {}
 } as State

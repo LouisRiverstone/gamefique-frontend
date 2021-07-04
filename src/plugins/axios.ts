@@ -4,7 +4,9 @@ import { setupInterceptorsTo } from '../middleware/interceptors';
 import localStorage_api from '@/utils/local-storage';
 import Token from '@/interfaces/store/Token';
 
-function auth() {
+export const url = "http://localhost:3333/api/v1"
+
+export function auth() {
   const gettedToken = localStorage_api.get('token') as Token;
   let token = "";
 
@@ -14,33 +16,45 @@ function auth() {
   return token
 }
 
-const axios = setupInterceptorsTo(
-  _axios.create({
-    baseURL: 'http://localhost:3333/api/v1',
-    timeout: 10000,
-    transformRequest: [function (data, headers) {
-      headers['Authorization'] = auth()
-      return JSON.stringify(data)
-    }],
-    headers: {
-      'Content-Type': 'application/json',
-      "Accept": 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, HEAD, OPTIONS',
-    },
-  }),
-);
+function axiosBuilder(file = false) {
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, HEAD, OPTIONS',
+    "Accept": 'application/json'
+  }
 
-const retryDelay = (retryNumber = 0) => {
-  const seconds = (retryNumber ** 2) * 1000;
-  const randomMs = 1000 * Math.random();
-  return seconds + randomMs;
-};
+  const axios = setupInterceptorsTo(
+    _axios.create({
+      baseURL: url,
+      timeout: 10000,
+      headers,
+      transformRequest: [function (data, headers) {
+        if (file) {
+          headers["Content-Type"] = 'multipart/form-data'
+        } else {
+          headers["Content-Type"] = 'application/json'
+        }
+        headers['Authorization'] = auth()
+        return JSON.stringify(data)
+      }],
+    }),
+  );
 
-axiosRetry(axios, {
-  retries: 2,
-  retryDelay,
-  retryCondition: axiosRetry.isRetryableError,
-});
+  const retryDelay = (retryNumber = 0) => {
+    const seconds = (retryNumber ** 2) * 1000;
+    const randomMs = 1000 * Math.random();
+    return seconds + randomMs;
+  };
 
-export default axios;
+  axiosRetry(axios, {
+    retries: 2,
+    retryDelay,
+    retryCondition: axiosRetry.isRetryableError,
+  });
+
+  return axios
+}
+
+
+export const AxiosFile = axiosBuilder(true);
+export default axiosBuilder();

@@ -1,4 +1,5 @@
-import axios from "../../plugins/axios"
+import axios, { url, auth } from "../../plugins/axios"
+import Axios from "axios"
 import { AxiosPromise } from "axios"
 
 import Register from "../../interfaces/auth/register"
@@ -16,6 +17,20 @@ export default {
     return axios.post(`${PATH}/login`, data)
   },
   user(): Promise<AxiosPromise> {
-    return axios.get(`${PATH}/user`,)
+    return axios.get(`${PATH}/user`)
+  },
+  update(data: any): Promise<AxiosPromise> | null {
+    return axios.put(`${PATH}/update`, data);
+  },
+  photo(photo: File) {
+    const formData = new FormData();
+    formData.append('photo', photo);
+
+    return Axios.post(`${url}/${PATH}/photo`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': auth()
+      }
+    })
   }
 }

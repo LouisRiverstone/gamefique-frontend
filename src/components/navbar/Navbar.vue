@@ -54,6 +54,9 @@
                                 class="nav-link active"
                                 aria-current="page"
                                 href="#"
+                                @click.prevent="
+                                    $router.push({ name: 'Profile' })
+                                "
                                 >{{ user.first_name }}</a
                             >
                         </li>

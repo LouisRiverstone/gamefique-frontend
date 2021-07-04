@@ -8,13 +8,21 @@
                         <div class="col-10">
                             <div class="row">
                                 <div class="col-2">
-                                    <img
-                                        src="https://picsum.photos/500/500"
+                                    <Photo
+                                        :photo="comment.user.photo"
                                         class="rounded microphoto"
                                     />
                                 </div>
                                 <div class="col-6">
-                                    <div class="row name-micro">
+                                    <div
+                                        class="row name-micro"
+                                        @click.prevent="
+                                            $router.push({
+                                                name: 'ProfileOthers',
+                                                params: { id: comment.user.id },
+                                            })
+                                        "
+                                    >
                                         {{ comment.user.first_name }}
                                     </div>
                                     <div class="row subs-micro">
@@ -147,6 +155,7 @@ import moment from "moment";
 import Comment from "@/components/comments/Comment.vue";
 import CommentInterface from "@/interfaces/comment/Comment";
 import User from "@/interfaces/store/User";
+import Photo from "@/components/utils/Photo.vue";
 
 export default defineComponent({
     props: {
@@ -157,6 +166,7 @@ export default defineComponent({
     },
     components: {
         Comment,
+        Photo,
     },
     computed: {
         user(): User {
@@ -225,6 +235,7 @@ export default defineComponent({
 .name-micro {
     font-weight: 700;
     font-size: 14px;
+    cursor: pointer;
 }
 .subs-micro {
     font-weight: 200;
