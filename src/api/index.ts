@@ -4,6 +4,7 @@ import school from './school'
 import post from './post'
 import comment from "./comment"
 import user from "./user"
+import like from "./like"
 
 export default {
   auth,
@@ -11,5 +12,6 @@ export default {
   school,
   post,
   comment,
-  user
+  user,
+  like
 };

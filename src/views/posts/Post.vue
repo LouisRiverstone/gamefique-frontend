@@ -1,7 +1,7 @@
 <template>
     <section>
         <div v-if="post.id">
-            <Post :post="post" />
+            <Post :postage="post" />
             <Comments
                 :comments="post.comments"
                 @pushComment="pushComment"

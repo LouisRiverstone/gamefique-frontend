@@ -115,6 +115,8 @@ export default defineComponent({
             selected: {},
             showList: true,
             loading: false,
+            valueSetted: false,
+            timeoutInterval: 0,
         };
     },
     computed: {
@@ -126,22 +128,33 @@ export default defineComponent({
                 if (text != this.searching_query) {
                     this.showList = true;
                 }
-                if (text.length >= 4) {
-                    try {
-                        this.loading = true;
-                        const { data } = await this.endpoint(text);
-                        this.list = data;
-                    } catch (error) {
-                        this.setErrors(error.message);
-                    } finally {
-                        this.loading = false;
+                if (text.length >= 5) {
+                    if (this.timeoutInterval) {
+                        clearTimeout(this.timeoutInterval);
                     }
+
+                    this.timeoutInterval = setTimeout(async () => {
+                        await this.query(text);
+                    }, 2000);
                 }
                 this.searching_query = text;
             },
         },
     },
     methods: {
+        async query(text: string) {
+            try {
+                this.loading = true;
+                const { data } = await this.endpoint(text);
+                this.list = data;
+                clearTimeout(this.timeoutInterval);
+                this.timeoutInterval = 0;
+            } catch (error) {
+                this.setErrors(error.message);
+            } finally {
+                this.loading = false;
+            }
+        },
         setValue(selected: any) {
             this.inputValue = selected.id;
             this.showList = false;
