@@ -1,3 +1,19 @@
+export default interface User {
+  id: number,
+  email: string,
+  first_name: string,
+  last_name: string,
+  created_at: string,
+  updated_at: string,
+  formation_institutes_id: number,
+  formation_courses_id: number,
+  school_id: number,
+  photo: null | string,
+  photo_cover: null | string,
+  formation_institute: formation_institute
+  formation_courses: formation_courses
+  school: school
+}
 interface formation_institute {
   id: number,
   ies_code: number,
@@ -42,22 +58,4 @@ interface school {
   name: string,
   school_type_id: number,
   city: city
-}
-
-
-export default interface User {
-  id: number,
-  email: string,
-  first_name: string,
-  last_name: string,
-  created_at: string,
-  updated_at: string,
-  formation_institutes_id: number,
-  formation_courses_id: number,
-  school_id: number,
-  photo: null | string,
-  photo_cover: null | string,
-  formation_institute: formation_institute
-  formation_courses: formation_courses
-  school: school
 }

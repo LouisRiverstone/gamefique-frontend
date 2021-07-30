@@ -1,5 +1,5 @@
 import axios from "../../plugins/axios"
-import Like from "@/interfaces/post/like"
+import Like from "@/interfaces/post/Like"
 import { AxiosPromise } from "axios";
 
 const PATH = "/like";

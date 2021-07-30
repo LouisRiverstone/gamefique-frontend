@@ -19,5 +19,12 @@ export default [
     path: '/posts/editor',
     name: 'PostEditor',
     component: Editor,
+  },
+  {
+    path: '/posts/editor/:id',
+    name: 'PostEditing',
+    component: Editor,
   }
+
+
 ];

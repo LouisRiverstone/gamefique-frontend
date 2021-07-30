@@ -2,48 +2,50 @@
     <div>
         <Modal title="Editar Perfil">
             <template v-slot:body>
-                <Form
-                    @submit="onSubmit"
-                    :validation-schema="schema"
-                    class="container"
-                >
-                    <Input name="first_name" placeholder="Nome" title="Nome" />
-                    <Input
-                        name="last_name"
-                        placeholder="Sobrenome"
-                        title="Sobrenome"
-                    />
-                    <!-- <Input
+                <div class="container">
+                    <Form @submit="onSubmit" :validation-schema="schema">
+                        <Input
+                            name="first_name"
+                            placeholder="Nome"
+                            title="Nome"
+                        />
+                        <Input
+                            name="last_name"
+                            placeholder="Sobrenome"
+                            title="Sobrenome"
+                        />
+                        <!-- <Input
                         name="email"
                         type="email"
                         placeholder="Email"
                         title="Email"
                     /> -->
-                    <DataList
-                        name="formation_courses_id"
-                        title="Curso de Formação"
-                        placeholder="Curso de Formação"
-                        :endpoint="api.formation.course.get"
-                        fieldName="name"
-                    />
-                    <DataList
-                        name="formation_institutes_id"
-                        title="Instituição de Formação"
-                        placeholder="Instituição de Formação"
-                        :endpoint="api.formation.institute.get"
-                        fieldName="name"
-                    />
+                        <DataList
+                            name="formation_courses_id"
+                            title="Curso de Formação"
+                            placeholder="Curso de Formação"
+                            :endpoint="api.formation.course.get"
+                            fieldName="name"
+                        />
+                        <DataList
+                            name="formation_institutes_id"
+                            title="Instituição de Formação"
+                            placeholder="Instituição de Formação"
+                            :endpoint="api.formation.institute.get"
+                            fieldName="name"
+                        />
 
-                    <DataList
-                        name="school_id"
-                        title="Escola de Atuação"
-                        placeholder="Escola de Atuação"
-                        :endpoint="api.school.get"
-                        fieldName="name"
-                    />
+                        <DataList
+                            name="school_id"
+                            title="Escola de Atuação"
+                            placeholder="Escola de Atuação"
+                            :endpoint="api.school.get"
+                            fieldName="name"
+                        />
 
-                    <Button type="submit">Salvar</Button>
-                </Form>
+                        <Button type="submit">Salvar</Button>
+                    </Form>
+                </div>
             </template>
         </Modal>
     </div>

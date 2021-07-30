@@ -11,7 +11,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 import { Editor, EditorContent } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
@@ -29,13 +29,19 @@ export default defineComponent({
         FloatingMenu,
         StandardMenu,
     },
-
     data() {
         return {
-            editor: null,
+            editor: null as any,
         };
     },
-
+    methods: {
+        setContent(content: string) {
+            this.editor.commands.setContent(content);
+        },
+        getContent(): string {
+            return this.editor.getHTML();
+        },
+    },
     mounted() {
         this.editor = new Editor({
             extensions: [

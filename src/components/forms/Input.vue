@@ -48,6 +48,11 @@ export default {
             return uuidv4();
         },
     },
+    methods: {
+        test(e: any) {
+            console.log(e);
+        },
+    },
 };
 </script>
 

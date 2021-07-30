@@ -48,29 +48,51 @@
                             </div>
                         </div>
 
-                        <div class="row mb-4">
-                            <div class="d-flex justify-content-center">
-                                <nav class="nav mt-3">
-                                    <a
-                                        class="nav-link active"
-                                        aria-current="page"
-                                        href="#"
-                                        >Aula</a
-                                    >
-                                    <a class="nav-link" href="#">Snippets</a>
-                                    <a class="nav-link" href="#"
-                                        >Plano de Aula</a
-                                    >
-                                </nav>
+                        <div class="row mb-4 mt-3">
+                            <div class="col">
+                                <div class="container">
+                                    <nav class="nav nav-pills nav-justified">
+                                        <a
+                                            class="nav-link"
+                                            :class="{ active: tab == 'post' }"
+                                            @click="tab = 'post'"
+                                            href="#"
+                                            >Postagem</a
+                                        >
+                                        <a class="nav-link disabled" href="#"
+                                            >Snippets</a
+                                        >
+                                        <a
+                                            class="nav-link"
+                                            href="#"
+                                            :class="{
+                                                active: tab == 'classPlan',
+                                            }"
+                                            @click="tab = 'classPlan'"
+                                            >Plano de Aula</a
+                                        >
+                                    </nav>
+                                </div>
                             </div>
                         </div>
 
                         <div class="row mt-3">
-                            <div class="col-12">
-                                <div class="container text-start">
-                                    <div v-html="post.html"></div>
+                            <transition name="fade">
+                                <div class="col-12">
+                                    <div
+                                        class="container text-start"
+                                        v-show="tab == 'post'"
+                                    >
+                                        <div v-html="post.html"></div>
+                                    </div>
+                                    <div
+                                        class="container text-start"
+                                        v-show="tab == 'classPlan'"
+                                    >
+                                        <ClassPlan :class_plan="class_plan" />
+                                    </div>
                                 </div>
-                            </div>
+                            </transition>
                         </div>
 
                         <div class="row mb-5 mt-3">
@@ -208,9 +230,10 @@
 import { defineComponent } from "vue";
 import Photo from "@/components/utils/Photo.vue";
 import Button from "@/components/forms/Button.vue";
+import ClassPlan from "./ClassPlan.vue";
 
 import api from "@/api";
-import Like from "@/interfaces/post/like";
+import Like from "@/interfaces/post/Like";
 
 export default defineComponent({
     props: {
@@ -222,6 +245,7 @@ export default defineComponent({
     components: {
         Photo,
         Button,
+        ClassPlan,
     },
     computed: {
         user(): any {
@@ -230,6 +254,14 @@ export default defineComponent({
         post(): any {
             return this.$props.postage;
         },
+        class_plan(): any {
+            const class_plan = this.$props.postage.class_plan;
+
+            return class_plan;
+        },
+    },
+    data() {
+        return { tab: "post" };
     },
     methods: {
         async like() {
@@ -320,5 +352,15 @@ export default defineComponent({
     .card-lateral {
         height: auto;
     }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>

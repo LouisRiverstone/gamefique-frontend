@@ -9,12 +9,15 @@
         </Button>
 
         <!-- Modal -->
-        <div class="modal" id="exampleModal" tabindex="-1">
-            <div
-                class="
-                    modal-dialog modal-dialog-centered modal-dialog-scrollable
-                "
-            >
+
+        <div
+            class="modal fade"
+            id="exampleModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">
@@ -27,28 +30,32 @@
                             aria-label="Close"
                         ></button>
                     </div>
+
                     <div class="modal-body">
                         <slot name="body"></slot>
                     </div>
-                    <!-- <div class="modal-footer">
-                        <slot name="footer"></slot>
-                    </div> -->
                 </div>
             </div>
         </div>
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 
 import Button from "@/components/forms/Button.vue";
+import { v4 as uuidv4 } from "uuid";
 
 export default defineComponent({
     props: {
         title: {
             required: true,
             type: String,
+        },
+    },
+    computed: {
+        id(): string {
+            return uuidv4();
         },
     },
     components: {

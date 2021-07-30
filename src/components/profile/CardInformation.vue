@@ -2,62 +2,36 @@
     <section class="container card-profile pb-4">
         <div class="row">
             <!-- Desktop -->
-            <div class="col-3 d-sm-none d-md-none d-lg-block">
-                <div class="container line-right mt-3">
-                    <div class="row">
-                        <div class="d-flex justify-content-center">
-                            <Photo :photo="user.photo" class="photo mt-3" />
+            <div class="col-lg-3 col-md-12">
+                <div class="line">
+                    <div class="container mt-3">
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+                                <Photo :photo="user.photo" class="photo mt-3" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mt-4">
-                        <span class="name">{{ user.first_name }}</span>
-                    </div>
-                    <div class="row mt-4" v-if="me.id == user.id">
-                        <div class="container">
-                            <Edit />
+                        <div class="row mt-4">
+                            <span class="name">{{ user.first_name }}</span>
                         </div>
-                        <div class="d-flex justify-content-center mt-3">
-                            <Button
-                                @click="makePhotoUpload = !makePhotoUpload"
-                                @click.prevent="clickUpload"
-                            >
-                                Mudar Foto
-                            </Button>
+                        <div class="row mt-4" v-if="me.id == user.id">
+                            <div class="container">
+                                <Edit />
+                            </div>
+                            <div class="d-flex justify-content-center mt-3">
+                                <Button
+                                    @click="makePhotoUpload = !makePhotoUpload"
+                                    @click.prevent="clickUpload"
+                                >
+                                    Mudar Foto
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Mobile -->
-            <div class="col-12 d-none d-sm-block d-md-block d-lg-none">
-                <div class="container">
-                    <div class="row mt-5">
-                        <div class="d-flex justify-content-center">
-                            <Photo :photo="user.photo" class="photo mt-3" />
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <span class="name">{{ user.first_name }}</span>
-                    </div>
-                    <div class="row mt-2" v-if="me.id == user.id">
-                        <div class="container">
-                            <Edit />
-                        </div>
-                        <div class="d-flex justify-content-center mt-3">
-                            <Button
-                                @click="makePhotoUpload = !makePhotoUpload"
-                                @click.prevent="clickUpload"
-                            >
-                                Mudar Foto
-                            </Button>
-                        </div>
-                    </div>
-                    <div class="mt-5 line-bottom"></div>
-                </div>
-            </div>
-            <!-- Desktop -->
-            <div class="col-9 d-sm-none d-md-none d-lg-block">
+            <div class="col-lg-9 col-sm-12">
                 <div class="row mt-5">
-                    <div class="col">
+                    <div class="col-lg-6 col-sm-12">
                         <span>
                             Instituição de Formação:
                             <p class="field">
@@ -91,57 +65,12 @@
                             <p class="field">
                                 {{ user.school?.city?.name }}
                             </p>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <!-- Mobile -->
-            <div class="col-12 d-none d-sm-block d-md-block d-lg-none">
-                <div class="row mt-5">
-                    <div class="col">
-                        <span>
-                            Instituição de Formação:
-                            <p class="field">
-                                {{ user.formation_institute?.name }}
-                            </p>
-                        </span>
-                        <span>
-                            Curso de Formação:
-                            <p class="field">
-                                {{ user.formation_courses?.name }}
-                            </p>
-                        </span>
-                        <span>
-                            Curso de Formação:
-                            <p class="field">
-                                {{ user.formation_courses?.name }}
-                            </p>
-                        </span>
-                        <span>
-                            Escola de Atuação:
-                            <p class="field">{{ user.school?.name }}</p>
-                        </span>
-                        <span>
-                            Estado de Atuação:
-                            <p class="field">
-                                {{ user.school?.city?.state?.name }}
-                            </p>
-                        </span>
-                        <span>
-                            Cidade de Atuação:
-                            <p class="field">
-                                {{ user.school?.city?.name }}
-                            </p>
-                        </span>
-                        <span>
-                            Email de Contato:
-                            <p class="field">{{ user.email }}</p>
                         </span>
                     </div>
                 </div>
             </div>
             <div>
-                <div class="mb-3" v-show="false">
+                <div v-show="false">
                     <label for="formFileSm" class="form-label"
                         >Photo Upload</label
                     >
@@ -228,10 +157,16 @@ export default defineComponent({
     font-weight: 500;
     font-size: 14px;
 }
-.line-right {
+
+.line {
     border-right: 1px solid #999;
 }
-.line-bottom {
-    border-bottom: 1px solid #999;
+
+@media only screen and (max-width: 991px) {
+    .line {
+        padding-bottom: 35px;
+        border-bottom: 1px solid #999;
+        border-right: 0px solid #999;
+    }
 }
 </style>
