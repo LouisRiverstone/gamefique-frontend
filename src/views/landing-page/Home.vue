@@ -28,8 +28,9 @@
             <p class="col-md-6 offset-md-3 lead">
                 <a
                     class="btn btn-outline-info btn-lg text-white"
-                    href="#prices"
+                    href="#"
                     role="button"
+                    @click="$router.push('Register')"
                     >Quero criar uma conta agora!</a
                 >
             </p>
@@ -74,6 +75,8 @@ body {
     height: 100vh;
     background: transparent url("~@/assets/landing-page/background.png") 0% 0%
         no-repeat padding-box;
+    background-position: center;
+    background-color: #000;
     opacity: 1;
     color: #fff;
 }

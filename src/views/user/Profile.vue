@@ -2,6 +2,17 @@
     <section class="mb-5">
         <Background />
         <CardInformation class="card-info" ref="cardInformation" />
+        <div class="mt-5 row" v-if="$route.params.id">
+            <h4>Postagens Publicadas</h4>
+
+            <div v-for="(post, i) in user.posts" :key="i">
+                <Preview :post="post" />
+            </div>
+
+            <span v-if="user.posts.length == 0">
+                Nenhuma Postagem desse usuário
+            </span>
+        </div>
     </section>
 </template>
 
@@ -11,11 +22,13 @@ import { defineComponent } from "vue";
 import api from "@/api";
 import CardInformation from "@/components/profile/CardInformation.vue";
 import Background from "@/components/profile/Background.vue";
+import Preview from "@/components/posts/Preview.vue";
 
 export default defineComponent({
     components: {
         CardInformation,
         Background,
+        Preview,
     },
     computed: {
         me(): any {
@@ -25,13 +38,20 @@ export default defineComponent({
             return this.$refs.cardInformation;
         },
     },
+    data() {
+        return {
+            user: { posts: [] },
+        };
+    },
     methods: {
         async load() {
             try {
                 this.$emit("loading-show");
                 if (this.$route.params.id) {
-                    const user = await api.user.show(this.$route.params.id);
-                    const loaded = await this.cardInformationLoad(user?.data);
+                    const { data } = await api.user.show(this.$route.params.id);
+                    this.user = { ...this.user, ...data };
+
+                    const loaded = await this.cardInformationLoad(data);
                 } else {
                     const loaded = await this.cardInformationLoad(this.me);
                 }

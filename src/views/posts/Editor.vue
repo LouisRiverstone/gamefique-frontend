@@ -26,14 +26,17 @@
                             <div class="col-sm-12 col-md-4">
                                 <div class="d-flex justify-content-evenly">
                                     <Button
-                                        type="button"
                                         class="btn-lg btn-info text-white"
+                                        type="submit"
+                                        @click="status = 'save'"
+                                        :loading="loading.save"
                                         >Salvar</Button
                                     >
                                     <Button
                                         class="btn-lg btn-success text-white"
                                         type="submit"
-                                        :loading="loading"
+                                        @click="status = 'publish'"
+                                        :loading="loading.publish"
                                         >Publicar</Button
                                     >
                                 </div>
@@ -147,6 +150,7 @@ import {
     ClassPlan as ClassPlanInterface,
     ClassPlanDescription as ClassPlanDescriptionInterface,
 } from "@/interfaces/post/ClassPlan";
+import User from "@/interfaces/store/User";
 
 export default defineComponent({
     components: {
@@ -168,7 +172,10 @@ export default defineComponent({
             return this.$refs.class_plan_editor;
         },
         id(): any {
-            return this.$route.params.id;
+            return this.$route.params.id || null;
+        },
+        user(): User {
+            return this.$store.getters["user"];
         },
     },
     data() {
@@ -196,31 +203,60 @@ export default defineComponent({
                 html: "",
             } as PostInterface,
             toast: useToast(),
-            loading: false,
+            loading: {
+                save: false,
+                publish: false,
+            },
+            status: "",
             tabActive: "editor",
         };
     },
     methods: {
-        async onSubmit(data: PostInterface) {
-            data = { ...this.post, ...data };
-            data.html = this.postEditor.editor.getContent();
-            data.temp_html = this.postEditor.editor.getContent();
+        async onSubmit(formData: PostInterface) {
+            console.log(this.status);
+            formData = { ...this.post, ...formData };
+            formData.html = this.postEditor.editor.getContent();
+            formData.temp_html = this.postEditor.editor.getContent();
 
-            if (!this.validatePost(data)) {
-                return;
-            }
+            let data = await this.save(formData, this.id);
 
-            if (this.id) {
-                await this.update(parseInt(this.id), data);
+            if (this.status === "publish") {
+                if (!this.validatePost(formData)) {
+                    return;
+                }
+
+                await this.publish(formData, data.id);
             }
         },
-        async update(id: number, post: PostInterface) {
+        async publish(post: PostInterface, id: number) {
             try {
-                this.loading = true;
-                const { data } = await api.post.update(id, post);
+                this.loading.publish = true;
+                const { data } = await api.post.publish(id, post);
+                return data;
             } catch (error) {
+                console.error(error);
             } finally {
-                this.loading = false;
+                this.loading.publish = false;
+            }
+        },
+        async save(post: PostInterface, id: number | null) {
+            try {
+                this.loading.save = true;
+                if (id) {
+                    const { data } = await api.post.update(id, post);
+                    return data;
+                } else {
+                    const { data } = await api.post.store(post);
+
+                    this.$router.push({
+                        name: "PostEditing",
+                        params: { id: data.id },
+                    });
+                }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                this.loading.save = false;
             }
         },
         validatePost(post: PostInterface): boolean {
@@ -236,12 +272,25 @@ export default defineComponent({
                 return false;
             }
         },
+        postMapper(post: PostInterface): PostInterface {
+            if (post.class_plan == null) {
+                post.class_plan = {} as ClassPlanInterface;
+            }
+
+            return post;
+        },
         async mount() {
             if (typeof this.id == "string") {
                 try {
                     this.$emit("loading-show");
                     const { data } = await api.post.get(parseInt(this.id));
-                    this.post = data as PostInterface;
+
+                    if (data.user_id != this.user.id) {
+                        this.$router.go(-1);
+                        return;
+                    }
+
+                    this.post = this.postMapper(data);
                     this.forms.setValues(data);
                     this.postEditor.editor.setContent(data.html);
                 } catch (error) {
@@ -267,6 +316,8 @@ export default defineComponent({
     min-height: 400px;
     background: transparent url("~@/assets/landing-page/background.png") 0% 0%
         no-repeat padding-box;
+    background-position: center;
+    background-color: #000;
     opacity: 1;
 }
 

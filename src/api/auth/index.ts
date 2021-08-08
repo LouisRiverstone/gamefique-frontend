@@ -19,6 +19,9 @@ export default {
   user(): Promise<AxiosPromise> {
     return axios.get(`${PATH}/user`)
   },
+  posts(): Promise<AxiosPromise> {
+    return axios.get(`${PATH}/posts`)
+  },
   update(data: any): Promise<AxiosPromise> | null {
     return axios.put(`${PATH}/update`, data);
   },

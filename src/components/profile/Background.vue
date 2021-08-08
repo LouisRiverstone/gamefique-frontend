@@ -16,6 +16,8 @@ export default {};
     min-height: 400px;
     background: transparent url("~@/assets/landing-page/background.png") 0% 0%
         no-repeat padding-box;
+    background-position: center;
+    background-color: #000;
     opacity: 1;
     color: #fff;
 }

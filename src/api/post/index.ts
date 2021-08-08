@@ -13,5 +13,12 @@ export default {
   },
   update(id: number, data: PostInterface) {
     return axios.put(`${PATH}/${id}`, data)
+  },
+  store(data: PostInterface) {
+    return axios.post(`${PATH}`, data)
+  },
+  publish(id: number, data: PostInterface) {
+    return axios.post(`${PATH}/publish/${id}`, data)
   }
+
 }

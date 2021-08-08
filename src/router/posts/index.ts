@@ -1,6 +1,7 @@
 import List from '@/views/posts/List.vue'
 import Post from '@/views/posts/Post.vue';
 import Editor from '@/views/posts/Editor.vue';
+import UserList from '@/views/posts/UserList.vue'
 
 export default [
   {
@@ -24,7 +25,10 @@ export default [
     path: '/posts/editor/:id',
     name: 'PostEditing',
     component: Editor,
+  },
+  {
+    path: '/posts/list/',
+    name: 'PostUserList',
+    component: UserList,
   }
-
-
 ];

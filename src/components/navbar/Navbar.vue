@@ -44,9 +44,9 @@
                                 aria-current="page"
                                 href="#"
                                 @click.prevent="
-                                    $router.push({ name: 'PostEditor' })
+                                    $router.push({ name: 'PostUserList' })
                                 "
-                                >Nova Postagem</a
+                                >Minhas Postagens</a
                             >
                         </li>
                         <li class="nav-item" v-if="logged">

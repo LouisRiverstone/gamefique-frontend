@@ -13,6 +13,14 @@ export default defineComponent({
         editor(): any {
             return this.$refs.editor;
         },
+        user(): any {
+            return this.$store.getters["user"];
+        },
+    },
+    mounted() {
+        if (!this.user.id) {
+            this.$router.go(-1);
+        }
     },
 });
 </script>
