@@ -19,5 +19,6 @@ export default interface Post {
   class_plan: ClassPlan;
   user: User;
   comments: Comment[];
+  tags: Array<Number>
   html: string;
 }

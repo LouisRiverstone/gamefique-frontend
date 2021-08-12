@@ -97,17 +97,11 @@
 
                         <div class="row mb-5 mt-3">
                             <div class="d-flex justify-content-end">
-                                <span class="badge rounded-pill bg-warning me-2"
-                                    >Tag 1</span
-                                >
-                                <span class="badge rounded-pill bg-primary me-1"
-                                    >Tag 1</span
-                                >
-                                <span class="badge rounded-pill bg-primary me-1"
-                                    >Tag 2</span
-                                >
-                                <span class="badge rounded-pill bg-primary"
-                                    >Tag 3</span
+                                <span
+                                    class="badge rounded-pill bg-primary me-1"
+                                    v-for="(tag, i) in post.tags"
+                                    :key="i"
+                                    >{{ tag.name }}</span
                                 >
                             </div>
                         </div>
@@ -139,6 +133,7 @@
                                     <div class="col">
                                         <div class="d-flex justify-content-end">
                                             <Button
+                                                v-if="user.id"
                                                 type="button"
                                                 class="btn-sm"
                                                 @click.prevent="like"

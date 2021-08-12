@@ -84,7 +84,7 @@ export default defineComponent({
     left: 0px;
     max-height: 500px;
     min-height: 400px;
-    background: transparent url("~@/assets/landing-page/background.png") 0% 0%
+    background: transparent url("~@/assets/landing-page/pencil-bg.png") 0% 0%
         no-repeat padding-box;
     background-position: center;
     background-color: #000;

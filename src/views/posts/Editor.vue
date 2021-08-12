@@ -23,6 +23,17 @@
                             <div class="col-sm-12 col-md-8">
                                 <Input title="Descrição" name="description" />
                             </div>
+
+                            <div class="col-sm-12 col-md-8">
+                                <Select
+                                    title="Matéria"
+                                    name="school_subject_id"
+                                    :options="school_subjects"
+                                    keyDescription="name"
+                                    keyValue="id"
+                                />
+                            </div>
+
                             <div class="col-sm-12 col-md-4">
                                 <div class="d-flex justify-content-evenly">
                                     <Button
@@ -93,7 +104,7 @@
                         </li>
                         <li class="nav-item">
                             <a
-                                class="nav-link disabled"
+                                class="nav-link"
                                 @click.prevent="tabActive = 'tags'"
                                 :class="{ active: tabActive == 'tags' }"
                                 href="#"
@@ -119,8 +130,15 @@
                                 />
                             </div>
                             <div v-show="tabActive == 'tags'" class="row">
-                                tags
-                                <!-- <ClassPlan /> -->
+                                <Select
+                                    class="mt-3"
+                                    title="Tags"
+                                    name="tags"
+                                    :options="tags"
+                                    :multiple="true"
+                                    keyDescription="name"
+                                    keyValue="id"
+                                />
                             </div>
                         </nav>
                     </transition>
@@ -139,6 +157,7 @@ import PostEditor from "@/components/posts/PostEditor.vue";
 import SnippetsEditor from "@/components/snippets/SnippetsEditor.vue";
 import Input from "@/components/forms/Input.vue";
 import Button from "@/components/forms/Button.vue";
+import Select from "@/components/forms/Select.vue";
 import ClassPlanEditor from "@/components/posts/ClassPlanEditor.vue";
 
 import * as yup from "yup";
@@ -160,6 +179,7 @@ export default defineComponent({
         ClassPlanEditor,
         Input,
         Button,
+        Select,
     },
     computed: {
         forms(): any {
@@ -187,6 +207,10 @@ export default defineComponent({
                 .string()
                 .required("Sua descrição precisa ter uma descrição")
                 .min(8, "Sua descrição deve ter no mínimo 8 caractéres"),
+            school_subject_id: yup
+                .number()
+                .required("Sua descrição precisa ter uma matéria"),
+            tags: yup.array().of(yup.number()),
         });
 
         return {
@@ -202,6 +226,8 @@ export default defineComponent({
                 temp_html: "",
                 html: "",
             } as PostInterface,
+            school_subjects: [],
+            tags: [],
             toast: useToast(),
             loading: {
                 save: false,
@@ -280,9 +306,11 @@ export default defineComponent({
             return post;
         },
         async mount() {
-            if (typeof this.id == "string") {
-                try {
-                    this.$emit("loading-show");
+            try {
+                this.$emit("loading-show");
+                this.school_subjects = (await api.school_subjects.list()).data;
+                this.tags = (await api.tags.list()).data;
+                if (typeof this.id == "string") {
                     const { data } = await api.post.get(parseInt(this.id));
 
                     if (data.user_id != this.user.id) {
@@ -293,11 +321,11 @@ export default defineComponent({
                     this.post = this.postMapper(data);
                     this.forms.setValues(data);
                     this.postEditor.editor.setContent(data.html);
-                } catch (error) {
-                    console.error(error);
-                } finally {
-                    this.$emit("loading-hide");
                 }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                this.$emit("loading-hide");
             }
         },
     },
@@ -314,7 +342,7 @@ export default defineComponent({
     left: 0px;
     max-height: 500px;
     min-height: 400px;
-    background: transparent url("~@/assets/landing-page/background.png") 0% 0%
+    background: transparent url("~@/assets/landing-page/pencil-bg.png") 0% 0%
         no-repeat padding-box;
     background-position: center;
     background-color: #000;
