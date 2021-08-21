@@ -15,16 +15,6 @@
                                 <Input title="Nome da Postagem" name="title" />
                             </div>
                             <div class="col-sm-12 col-md-4">
-                                <!-- <Input title="Matéria" :disabled="true" /> -->
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-12 col-md-8">
-                                <Input title="Descrição" name="description" />
-                            </div>
-
-                            <div class="col-sm-12 col-md-8">
                                 <Select
                                     title="Matéria"
                                     name="school_subject_id"
@@ -33,6 +23,14 @@
                                     keyValue="id"
                                 />
                             </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-8">
+                                <Input title="Descrição" name="description" />
+                            </div>
+
+                            <div class="col-sm-12 col-md-8"></div>
 
                             <div class="col-sm-12 col-md-4">
                                 <div class="d-flex justify-content-evenly">
@@ -210,7 +208,7 @@ export default defineComponent({
             school_subject_id: yup
                 .number()
                 .required("Sua descrição precisa ter uma matéria"),
-            tags: yup.array().of(yup.number()),
+            tags: yup.array().optional().of(yup.number()),
         });
 
         return {
@@ -239,7 +237,6 @@ export default defineComponent({
     },
     methods: {
         async onSubmit(formData: PostInterface) {
-            console.log(this.status);
             formData = { ...this.post, ...formData };
             formData.html = this.postEditor.editor.getContent();
             formData.temp_html = this.postEditor.editor.getContent();
@@ -300,7 +297,13 @@ export default defineComponent({
         },
         postMapper(post: PostInterface): PostInterface {
             if (post.class_plan == null) {
-                post.class_plan = {} as ClassPlanInterface;
+                post.class_plan = {
+                    class_plan_objectives: [],
+                    class_plan_activities: [],
+                    class_plan_strategies: [],
+                    class_plan_resources: [],
+                    duration: "",
+                } as ClassPlanInterface;
             }
 
             return post;

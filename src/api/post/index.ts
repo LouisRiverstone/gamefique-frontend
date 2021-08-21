@@ -1,12 +1,17 @@
 import axios from "../../plugins/axios"
 import { AxiosPromise } from "axios"
 import PostInterface from "@/interfaces/post/Post"
+import PostListParams from "@/interfaces/post/PostListParams"
 
 const PATH = `posts`
 
+
 export default {
-  list(page: number): Promise<AxiosPromise> {
-    return axios.get(PATH, { params: { page } })
+  list(params: PostListParams): Promise<AxiosPromise> {
+    return axios.get(PATH, { params })
+  },
+  top(): Promise<AxiosPromise> {
+    return axios.get(`${PATH}/top-posts`)
   },
   get(id: number): Promise<AxiosPromise> {
     return axios.get(`${PATH}/${id}`);

@@ -62,10 +62,32 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mt-3">
                             <p class="text-justify">
                                 {{ post.description }}
                             </p>
+                        </div>
+                        <div class="row mb-3 mt-4">
+                            <div class="d-flex justify-content-end">
+                                <a
+                                    class="
+                                        badge
+                                        rounded-pill
+                                        bg-primary
+                                        me-1
+                                        tags
+                                    "
+                                    v-for="(tag, i) in post.tags"
+                                    :key="i"
+                                    :href="
+                                        $router.resolve({
+                                            name: 'PostList',
+                                            query: { tag: tag.id },
+                                        }).href
+                                    "
+                                    >{{ tag.name }}</a
+                                >
+                            </div>
                         </div>
                         <div class="row description">
                             <div class="d-flex justify-content-end mb-3">
@@ -279,6 +301,12 @@ export default defineComponent({
     background-color: #fff;
     border: 2px transparent;
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0);
+}
+.tags {
+    cursor: pointer;
+}
+.tags a {
+    outline: none;
 }
 
 @-webkit-keyframes shadow-pop-tl {

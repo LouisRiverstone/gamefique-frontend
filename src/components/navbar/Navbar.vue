@@ -28,11 +28,10 @@
                             <a
                                 class="nav-link active"
                                 aria-current="page"
-                                href="#"
-                                @click.prevent="
-                                    $router.push({
+                                :href="
+                                    $router.resolve({
                                         name: 'PostList',
-                                    })
+                                    }).href
                                 "
                             >
                                 Postagens</a
