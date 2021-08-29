@@ -92,5 +92,9 @@ export default yup.object({
     duration: yup
       .string()
       .required("Sua publicação precisa ter uma duração"),
+    tags: yup.array().of(yup.number()).min(
+      1,
+      "Precisa ter ao menos uma Tag referente ao conteúdo"
+    ),
   }),
 });

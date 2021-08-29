@@ -1,11 +1,22 @@
 <template>
-    <section class="container">
-        <div class="row mt-5">
-            <div class="col-sm-12 col-md-8">
+    <section>
+        <div class="row mt-3">
+            <h4>Plano de Aula</h4>
+        </div>
+        <div class="row mt-3">
+            <div class="col-sm-12 col-md-12">
+                <div class="row pb-4">
+                    <h5 class="mt-4 mb-4">Duração</h5>
+                    <div><input v-model="class_plan.duration" /></div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2 mx-5">
+            <div class="col-sm-12 col-md-12">
                 <!-- Objetivos -->
                 <div class="row mb-3">
-                    <div class="card container">
-                        <h3 class="mt-4">Objetivos</h3>
+                    <div class="container">
+                        <h5 class="mt-4">Objetivos</h5>
                         <div class="mt-4">
                             <ul>
                                 <li
@@ -107,8 +118,8 @@
                 </div>
                 <!-- Atividades -->
                 <div class="row mb-3">
-                    <div class="card container">
-                        <h3 class="mt-4">Atividades</h3>
+                    <div class="container">
+                        <h5 class="mt-4">Atividades</h5>
                         <div class="mt-4">
                             <ul>
                                 <li
@@ -210,8 +221,8 @@
                 </div>
                 <!-- Estratégias -->
                 <div class="row mb-3">
-                    <div class="card container">
-                        <h3 class="mt-4">Estratégias</h3>
+                    <div class="container">
+                        <h5 class="mt-4">Estratégias</h5>
                         <div class="mt-4">
                             <ul>
                                 <li
@@ -313,8 +324,8 @@
                 </div>
                 <!-- Recursos -->
                 <div class="row mb-3">
-                    <div class="card container">
-                        <h3 class="mt-4">Recursos</h3>
+                    <div class="container">
+                        <h5 class="mt-4">Recursos</h5>
                         <div class="mt-4">
                             <ul>
                                 <li
@@ -414,13 +425,6 @@
                             </div>
                         </Form>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-sm-12 col-md-4">
-                <div class="row card pb-4">
-                    <h3 class="mt-4 mb-4">Duração</h3>
-                    <div><input v-model="class_plan.duration" /></div>
                 </div>
             </div>
         </div>

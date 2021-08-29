@@ -5,8 +5,8 @@
                 <div class="col-md-3 col-sm-12 mb-4 mt-4">
                     <div class="row">
                         <div class="d-flex justify-content-center align-middle">
-                            <img
-                                src="https://picsum.photos/500/500"
+                            <Photo
+                                :photo="post.photo"
                                 class="rounded microphoto"
                                 @click.prevent="
                                     $router.push({
@@ -244,12 +244,14 @@
 
 <script>
 import { defineComponent } from "vue";
+import Photo from "@/components/utils/Photo.vue";
 import Button from "@/components/forms/Button.vue";
 import moment from "moment";
 
 export default defineComponent({
     components: {
         Button,
+        Photo,
     },
     props: {
         post: {
@@ -272,10 +274,11 @@ export default defineComponent({
 
 <style scoped>
 .microphoto {
-    height: 180px;
-    width: 180px;
+    width: 150px;
+    height: auto;
     cursor: pointer;
 }
+
 .microphoto:hover {
     -webkit-animation: shadow-pop-tl 0.5s cubic-bezier(0.47, 0, 0.745, 0.715)
         both;

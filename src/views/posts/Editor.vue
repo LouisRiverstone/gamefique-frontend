@@ -2,70 +2,104 @@
     <section>
         <Form @submit="onSubmit" :validation-schema="schema" ref="form">
             <div class="bg mb-5 pb-4">
-                <div class="row">
-                    <div class="d-flex justify-content-left mt-5 mb-5 ms-5">
-                        <h2 class="text-white">Nova Publicação</h2>
-                    </div>
+                <div class="d-flex justify-content-left mb-5 ms-5">
+                    <h2 class="text-white mt-5">Nova Publicação</h2>
                 </div>
 
                 <div class="header pt-5">
                     <div class="container">
                         <div class="row">
-                            <div class="col-sm-12 col-md-8">
-                                <Input title="Nome da Postagem" name="title" />
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <Select
-                                    title="Matéria"
-                                    name="school_subject_id"
-                                    :options="school_subjects"
-                                    keyDescription="name"
-                                    keyValue="id"
+                            <div class="col-sm-12 col-md-4 mb-5">
+                                <Photo
+                                    :photo="post.photo"
+                                    class="photo img-thumbnail"
+                                    @click.prevent="clickUpload"
                                 />
+                                <div
+                                    class="spinner-border text-light"
+                                    role="status"
+                                    v-show="imageUploading"
+                                >
+                                    <span class="visually-hidden"
+                                        >Loading...</span
+                                    >
+                                </div>
+                                <div v-show="false">
+                                    <label for="formFileSm" class="form-label"
+                                        >Photo Upload</label
+                                    >
+                                    <input
+                                        class="form-control form-control-sm"
+                                        type="file"
+                                        id="image"
+                                        ref="image"
+                                        v-on:change="imageUpload()"
+                                    />
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="row">
                             <div class="col-sm-12 col-md-8">
-                                <Input title="Descrição" name="description" />
-                            </div>
-
-                            <div class="col-sm-12 col-md-8"></div>
-
-                            <div class="col-sm-12 col-md-4">
-                                <div class="d-flex justify-content-evenly">
-                                    <Button
-                                        class="btn-lg btn-info text-white"
-                                        type="submit"
-                                        @click="status = 'save'"
-                                        :loading="loading.save"
-                                        >Salvar</Button
+                                <div class="row">
+                                    <div class="col-12">
+                                        <Input
+                                            title="Nome da Postagem"
+                                            name="title"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-8">
+                                        <Input
+                                            title="Descrição"
+                                            name="description"
+                                        />
+                                    </div>
+                                    <div class="col-sm-12 col-md-4">
+                                        <Select
+                                            title="Matéria"
+                                            name="school_subject_id"
+                                            :options="school_subjects"
+                                            keyDescription="name"
+                                            keyValue="id"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="row justify-content-end">
+                                    <div
+                                        class="
+                                            col-sm-12 col-md-4 col-offset-md-4
+                                        "
                                     >
-                                    <Button
-                                        class="btn-lg btn-success text-white"
-                                        type="submit"
-                                        @click="status = 'publish'"
-                                        :loading="loading.publish"
-                                        >Publicar</Button
-                                    >
+                                        <div
+                                            class="
+                                                d-flex
+                                                justify-content-evenly
+                                            "
+                                        >
+                                            <Button
+                                                class="
+                                                    btn-lg btn-info
+                                                    text-white
+                                                "
+                                                type="submit"
+                                                @click="status = 'save'"
+                                                :loading="loading.save"
+                                                >Salvar</Button
+                                            >
+                                            <Button
+                                                class="
+                                                    btn-lg btn-success
+                                                    text-white
+                                                "
+                                                type="submit"
+                                                @click="status = 'publish'"
+                                                :loading="loading.publish"
+                                                >Publicar</Button
+                                            >
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="card">
-                        <span>Progresso para Publicação</span>
-                        <div class="progress mt-2 mb-2">
-                            <div
-                                class="progress-bar"
-                                role="progressbar"
-                                style="width: 25%"
-                                aria-valuenow="25"
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                            >
-                                25%
-                            </div>
-                        </div>
-                    </div> -->
                     </div>
                 </div>
             </div>
@@ -128,15 +162,42 @@
                                 />
                             </div>
                             <div v-show="tabActive == 'tags'" class="row">
-                                <Select
-                                    class="mt-3"
-                                    title="Tags"
-                                    name="tags"
-                                    :options="tags"
-                                    :multiple="true"
-                                    keyDescription="name"
-                                    keyValue="id"
-                                />
+                                <div class="container">
+                                    <div class="row mt-3">
+                                        <h4>Tags Referentes</h4>
+                                    </div>
+                                    <div
+                                        class="
+                                            d-flex
+                                            justify-content-left
+                                            mt-5
+                                            mb-5
+                                            ms-5
+                                        "
+                                    >
+                                        <div class="row justify-content-left">
+                                            <div
+                                                class="form-check mb-2"
+                                                v-for="(tag, i) in tags"
+                                                :key="i"
+                                            >
+                                                <input
+                                                    class="form-check-input"
+                                                    type="checkbox"
+                                                    :value="tag.id"
+                                                    v-model="post_tags"
+                                                    :id="`tag-${tag.id}`"
+                                                />
+                                                <label
+                                                    class="form-check-label"
+                                                    :for="`tag-${tag.id}`"
+                                                >
+                                                    {{ tag.name }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </nav>
                     </transition>
@@ -156,6 +217,7 @@ import SnippetsEditor from "@/components/snippets/SnippetsEditor.vue";
 import Input from "@/components/forms/Input.vue";
 import Button from "@/components/forms/Button.vue";
 import Select from "@/components/forms/Select.vue";
+import Photo from "@/components/utils/Photo.vue";
 import ClassPlanEditor from "@/components/posts/ClassPlanEditor.vue";
 
 import * as yup from "yup";
@@ -178,6 +240,7 @@ export default defineComponent({
         Input,
         Button,
         Select,
+        Photo,
     },
     computed: {
         forms(): any {
@@ -195,6 +258,17 @@ export default defineComponent({
         user(): User {
             return this.$store.getters["user"];
         },
+        imageRef(): any {
+            return this.$refs.image;
+        },
+        post_tags: {
+            get(): Array<unknown> {
+                return this.post.tags || [];
+            },
+            set(tags: Array<number>) {
+                this.post.tags = tags;
+            },
+        },
     },
     data() {
         const schema = yup.object({
@@ -208,7 +282,6 @@ export default defineComponent({
             school_subject_id: yup
                 .number()
                 .required("Sua descrição precisa ter uma matéria"),
-            tags: yup.array().optional().of(yup.number()),
         });
 
         return {
@@ -223,6 +296,7 @@ export default defineComponent({
                 } as ClassPlanInterface,
                 temp_html: "",
                 html: "",
+                tags: [] as Array<unknown>,
             } as PostInterface,
             school_subjects: [],
             tags: [],
@@ -231,13 +305,15 @@ export default defineComponent({
                 save: false,
                 publish: false,
             },
+            imageUploading: false,
             status: "",
             tabActive: "editor",
         };
     },
     methods: {
         async onSubmit(formData: PostInterface) {
-            formData = { ...this.post, ...formData };
+            const override = { tags: this.post.tags };
+            formData = { ...this.post, ...formData, ...override };
             formData.html = this.postEditor.editor.getContent();
             formData.temp_html = this.postEditor.editor.getContent();
 
@@ -306,6 +382,12 @@ export default defineComponent({
                 } as ClassPlanInterface;
             }
 
+            post.tags = post.tags.map((tag: any) => {
+                return tag.id;
+            });
+
+            console.log(post);
+
             return post;
         },
         async mount() {
@@ -331,6 +413,34 @@ export default defineComponent({
                 this.$emit("loading-hide");
             }
         },
+        clickUpload() {
+            if (this.post.id) {
+                this.imageRef.click();
+            } else {
+                this.toast.error(
+                    "Você precisa antes salvar a postagem para alterar a imagem"
+                );
+            }
+        },
+        async imageUpload() {
+            try {
+                if (this.imageRef && this.post.id) {
+                    this.imageUploading = true;
+                    const photo = this.imageRef.files[0] as File;
+                    const request = (
+                        await api.post.photo({
+                            photo,
+                            post_id: this.post.id,
+                        })
+                    ).data;
+                    this.post.photo = request.file;
+                }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                this.imageUploading = false;
+            }
+        },
     },
     mounted() {
         this.mount();
@@ -352,9 +462,30 @@ export default defineComponent({
     opacity: 1;
 }
 
+.photo {
+    width: 150px;
+    height: auto;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+    .bg {
+        background-color: #6c6b6a;
+        top: 0px;
+        left: 0px;
+        min-height: 850px;
+        background: transparent url("~@/assets/landing-page/pencil-bg.png") 0%
+            0% no-repeat padding-box;
+        background-position: center;
+        background-color: #000;
+        opacity: 1;
+    }
+}
+
 .header {
     /* background-color: #ccc; */
 }
+
 h2 {
     font-weight: 700;
 }
