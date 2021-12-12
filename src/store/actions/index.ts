@@ -1,6 +1,6 @@
 import localstorage_api from "@/utils/local-storage";
-import Login from "@/interfaces/auth/login";
-import Register from "@/interfaces/auth/register";
+import Login from "@/interfaces/auth/Login";
+import Register from "@/interfaces/auth/Register";
 import api from "@/api";
 
 export default {

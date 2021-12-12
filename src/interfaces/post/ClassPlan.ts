@@ -3,10 +3,10 @@ export interface ClassPlan {
   duration: string;
   created_at?: string;
   updated_at?: string;
-  class_plan_activities: ClassPlanDescription[];
-  class_plan_objectives: ClassPlanDescription[];
-  class_plan_resources: ClassPlanDescription[];
-  class_plan_strategies: ClassPlanDescription[];
+  activities: ClassPlanDescription[];
+  objectives: ClassPlanDescription[];
+  resources: ClassPlanDescription[];
+  strategies: ClassPlanDescription[];
 }
 
 export interface ClassPlanDescription {

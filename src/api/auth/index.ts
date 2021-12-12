@@ -2,8 +2,8 @@ import axios, { url, auth } from "../../plugins/axios"
 import Axios from "axios"
 import { AxiosPromise } from "axios"
 
-import Register from "../../interfaces/auth/register"
-import Login from "../../interfaces/auth/login"
+import Register from "../../interfaces/auth/Register"
+import Login from "../../interfaces/auth/Login"
 
 
 const PATH = `auth`

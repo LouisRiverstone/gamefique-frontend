@@ -82,7 +82,7 @@ import DataList from "@/components/forms/DataList.vue";
 import * as yup from "yup";
 
 import api from "@/api";
-import Register from "@/interfaces/auth/register";
+import Register from "@/interfaces/auth/Register";
 
 export default defineComponent({
     components: {
