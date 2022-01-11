@@ -51,7 +51,16 @@
                       href="#"
                       >Postagem</a
                     >
-                    <a class="nav-link disabled" href="#">Snippets</a>
+                    <a
+                      class="nav-link"
+                      href="#"
+                      :class="{
+                        active: tab == 'snippets',
+                        disabled: post.snippets.length === 0,
+                      }"
+                      @click="tab = 'snippets'"
+                      >Snippets</a
+                    >
                     <a
                       class="nav-link"
                       href="#"
@@ -71,6 +80,9 @@
                 <div class="col-12">
                   <div class="container text-start" v-show="tab == 'post'">
                     <div v-html="post.html"></div>
+                  </div>
+                  <div class="container text-start" v-show="tab == 'snippets'">
+                    <Snippets :snippets="post.snippets" />
                   </div>
                   <div class="container text-start" v-show="tab == 'classPlan'">
                     <ClassPlan :class_plan="class_plan" />
@@ -192,6 +204,7 @@ import { defineComponent } from "vue";
 import Photo from "@/components/utils/Photo.vue";
 import Button from "@/components/forms/Button.vue";
 import ClassPlan from "./ClassPlan.vue";
+import Snippets from "./Snippets.vue";
 
 import api from "@/api";
 import Like from "@/interfaces/post/Like";
@@ -207,6 +220,7 @@ export default defineComponent({
     Photo,
     Button,
     ClassPlan,
+    Snippets,
   },
   computed: {
     user(): any {
