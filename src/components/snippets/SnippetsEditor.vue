@@ -130,8 +130,6 @@ export default defineComponent({
       this.snips = this.snips.filter((snippet, s) => {
         return s != index;
       });
-
-      console.error(this.snips);
     },
     add() {
       this.snips.push({

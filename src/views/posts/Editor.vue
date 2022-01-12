@@ -134,6 +134,7 @@
                   v-if="ready"
                   ref="snippets_editor"
                   :snippets="post.snippets"
+                  @setSnippets="setSnippets"
                 />
               </div>
               <div v-show="tabActive == 'classplan'" class="row">
@@ -302,7 +303,10 @@ export default defineComponent({
     async publish(post: PostInterface, id: number) {
       try {
         this.loading.publish = true;
-        const { data } = await api.post.publish(id, post);
+        const { data } = await api.post.publish(id, {
+          ...post,
+          ...{ snippets: this.post.snippets },
+        });
         return data;
       } catch (error) {
         console.error(error);
@@ -314,10 +318,16 @@ export default defineComponent({
       try {
         this.loading.save = true;
         if (id) {
-          const { data } = await api.post.update(id, post);
+          const { data } = await api.post.update(id, {
+            ...post,
+            ...{ snippets: this.post.snippets },
+          });
           return data;
         } else {
-          const { data } = await api.post.store(post);
+          const { data } = await api.post.store({
+            ...post,
+            ...{ snippets: this.post.snippets },
+          });
 
           this.$router.push({
             name: "PostEditing",
@@ -388,6 +398,10 @@ export default defineComponent({
       } finally {
         this.$emit("loading-hide");
       }
+    },
+    setSnippets(snippets: any) {
+      console.error(snippets);
+      this.post.snippets = snippets;
     },
     clickUpload() {
       if (this.post.id) {

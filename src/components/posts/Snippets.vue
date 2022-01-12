@@ -1,14 +1,29 @@
 <template>
   <section>
     <div v-if="ready">
-      <div v-for="(snippet, s) in snips" :key="s">
-        <h3>
-          {{ snippet.name }}{{ snippet.programming_language.file_extension }}
-        </h3>
-        <highlightjs
-          :language="snippet.programming_language.name"
-          :code="snippet.code"
-        />
+      <div v-for="(snippet, s) in snips" :key="s" class="py-2">
+        <div class="d-flex justify-content-between align-items-center">
+          <h3>
+            {{ snippet.name }}{{ snippet.programming_language.file_extension }}
+          </h3>
+
+          <div class="d-flex align-items-center">
+            <a
+              :href="`${url}/uploads/${snippet.link}${snippet.programming_language.file_extension}`"
+              target="_blank"
+            >
+              <img src="@/assets/icons/download.svg" />
+            </a>
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <highlightjs
+            :language="snippet.programming_language.name"
+            :code="snippet.code"
+            class="flex-grow-1"
+          />
+        </div>
       </div>
     </div>
   </section>
