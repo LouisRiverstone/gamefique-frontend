@@ -95,7 +95,7 @@
             </li>
             <li class="nav-item">
               <a
-                class="nav-link disabled"
+                class="nav-link"
                 @click.prevent="tabActive = 'snippets'"
                 :class="{ active: tabActive == 'snippets' }"
                 href="#"
@@ -130,7 +130,11 @@
                 <PostEditor ref="post_editor" />
               </div>
               <div v-show="tabActive == 'snippets'" class="row">
-                <SnippetsEditor ref="snippets_editor" />
+                <SnippetsEditor
+                  v-if="ready"
+                  ref="snippets_editor"
+                  :snippets="post.snippets"
+                />
               </div>
               <div v-show="tabActive == 'classplan'" class="row">
                 <ClassPlanEditor
@@ -218,6 +222,9 @@ export default defineComponent({
     classPlanEditor(): any {
       return this.$refs.class_plan_editor;
     },
+    snippetsEditor(): any {
+      return this.$refs.snippets_editor;
+    },
     id(): any {
       return this.$route.params.id || null;
     },
@@ -247,7 +254,6 @@ export default defineComponent({
         .number()
         .required("Sua descrição precisa ter uma matéria"),
     });
-
     return {
       schema,
       post: {
@@ -261,6 +267,7 @@ export default defineComponent({
         temp_html: "",
         html: "",
         tags: [] as Array<unknown>,
+        snippets: [] as Array<unknown>,
       } as unknown as PostInterface,
       school_subjects: [],
       tags: [],
@@ -271,6 +278,7 @@ export default defineComponent({
       },
       imageUploading: false,
       status: "",
+      ready: false,
       tabActive: "editor",
     };
   },
@@ -346,11 +354,13 @@ export default defineComponent({
         } as ClassPlanInterface;
       }
 
+      if (post.snippets == null) {
+        post.snippets = [];
+      }
+
       post.tags = post.tags.map((tag: any) => {
         return tag.id;
       });
-
-      console.log(post);
 
       return post;
     },
@@ -371,6 +381,8 @@ export default defineComponent({
           this.forms.setValues(data);
           this.postEditor.editor.setContent(data.html);
         }
+
+        this.ready = true;
       } catch (error) {
         console.error(error);
       } finally {

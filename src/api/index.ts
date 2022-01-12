@@ -7,6 +7,7 @@ import user from "./user"
 import like from "./like"
 import school_subjects from "./school_subjects"
 import tags from "./tags"
+import programming_languages from "./programming_languages"
 
 export default {
   auth,
@@ -17,5 +18,6 @@ export default {
   user,
   like,
   school_subjects,
+  programming_languages,
   tags
 };

@@ -1,135 +1,182 @@
 <template>
-    <div v-if="editor">
-        <div v-html="saved" />
-        <editor-content :editor="editor" />
-        <Button :type="button" @click.prevent="save">Salvar</Button>
+  <section class="my-3">
+    <div class="d-flex justify-content-end my-2">
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        @click.prevent="add"
+      >
+        <img src="@/assets/icons/add-file.svg" />
+      </button>
     </div>
+
+    <div class="accordion" id="accordion_snippets" v-if="ready">
+      <div v-for="(snippet, s) in snips" :key="s" class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            :data-bs-target="`#code-${s}`"
+            aria-expanded="true"
+            :aria-controls="`code-${s}`"
+          >
+            {{ snippet.name }}
+          </button>
+        </h2>
+        <div
+          :id="`code-${s}`"
+          class="accordion-collapse collapse show"
+          :aria-labelledby="`code-${s}`"
+          data-bs-parent="#accordion_snippets"
+        >
+          <div
+            class="
+              d-flex
+              justify-content-between
+              align-items-center
+              my-editor
+              py-2
+              px-3
+            "
+          >
+            <div class="d-flex">
+              <input type="text" v-model="snippet.name" />
+              <select v-model="snippet.programming_language_id">
+                <option :value="null" disabled>Selecione</option>
+                <option
+                  v-for="(language, l) in languages"
+                  :key="l"
+                  :value="language.id"
+                >
+                  {{ language.name }}
+                </option>
+              </select>
+            </div>
+            <div class="d-flex">
+              <a href="" @click.prevent="remove(s)">
+                <img src="@/assets/icons/remove-file.svg" />
+              </a>
+            </div>
+          </div>
+
+          <prism-editor
+            class="my-editor"
+            v-model="snippet.content"
+            :highlight="highlighter"
+            line-numbers
+          ></prism-editor>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
-import { Editor, EditorContent, VueNodeViewRenderer } from "@tiptap/vue-3";
-import Document from "@tiptap/extension-document";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
-import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
-import CodeBlockComponent from "./CodeBlockComponent";
-import Button from "@/components/forms/Button.vue";
+import api from "@/api";
+import { defineComponent } from "vue";
+import axios from "axios";
+import { url } from "@/plugins/axios";
 
-import { lowlight, registeredLanguages } from "@/plugins/lowlight-languages";
+import { PrismEditor } from "vue-prism-editor";
+import "vue-prism-editor/dist/prismeditor.min.css";
+import { highlight, languages } from "prismjs/components/prism-core";
+import "prismjs/components/prism-clike";
+import "prismjs/components/prism-javascript";
+import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
 
-export default {
-    components: {
-        EditorContent,
-        Button,
+export default defineComponent({
+  components: {
+    PrismEditor,
+  },
+  props: {
+    snippets: {
+      type: Array,
     },
-    data() {
-        return {
-            editor: null,
-            saved: "<h1>Teste</h1>",
-        };
+  },
+  data() {
+    return {
+      ready: false,
+      url: url,
+      languages: [],
+      snips: this.snippets,
+    };
+  },
+  methods: {
+    async populateSnippets() {
+      for (let i = 0; i < this.snips.length; i++) {
+        const file = await this.getFile(
+          `${this.url}/uploads/${this.snips[i].link}${this.snips[i].programming_language.file_extension}`
+        );
+
+        this.snips[i].code = file;
+        this.snips[i].content = file;
+      }
+
+      this.ready = true;
     },
-    mounted() {
-        this.editor = new Editor({
-            extensions: [
-                Document,
-                Paragraph,
-                Text,
-                CodeBlockLowlight.extend({
-                    addNodeView() {
-                        return VueNodeViewRenderer(CodeBlockComponent);
-                    },
-                }).configure({ lowlight, registeredLanguages }),
-            ],
-            content: `
-     
-        <pre><code class="language-csharp">
-          string text = "Olá Mundo";
-          Debug.Log("Texto: " + text);
-        </code></pre>
-      
-      `,
-        });
-        console.log(this.editor);
+    async getFile(file) {
+      const { data } = await axios.get(file);
+      return data;
     },
-    methods: {
-        save() {
-            this.saved = this.editor.getHTML();
-        },
+    async mount() {
+      this.languages = (await api.programming_languages.list()).data;
+      await this.populateSnippets();
     },
-};
+    highlighter(code) {
+      return highlight(code, languages.js); //returns html
+    },
+    remove(index) {
+      this.snips = this.snips.filter((snippet, s) => {
+        return s != index;
+      });
+
+      console.error(this.snips);
+    },
+    add() {
+      this.snips.push({
+        content: null,
+        name: "Sem nome",
+        programming_language_id: null,
+      });
+    },
+    // highlighter(code, language) {
+    //   const lang = languages[language.replace(".", "")];
+    //   const highlighted = highlight(code, lang);
+    //   return highlighted;
+    // },
+  },
+  mounted() {
+    this.mount();
+  },
+  watch: {
+    snips: {
+      deep: true,
+      handler(val) {
+        this.$emit("setSnippets", val);
+      },
+    },
+  },
+});
 </script>
 
-<style lang="scss">
-/* Basic editor styles */
-.ProseMirror {
-    > * + * {
-        margin-top: 0.75em;
-    }
 
-    pre {
-        background: #0d0d0d;
-        color: #fff;
-        font-family: "JetBrainsMono", monospace;
-        padding: 0.75rem 1rem;
+<style scoped>
+/* required class */
+.my-editor {
+  /* we dont use `language-` classes anymore so thats why we need to add background and text color manually */
+  background: #2d2d2d;
+  color: #ccc;
 
-        code {
-            color: inherit;
-            padding: 0;
-            background: none;
-            font-size: 0.8rem;
-        }
+  /* you must provide font-family font-size line-height. Example: */
+  font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 5px;
+}
 
-        .hljs-comment,
-        .hljs-quote {
-            color: #616161;
-        }
-
-        .hljs-variable,
-        .hljs-template-variable,
-        .hljs-attribute,
-        .hljs-tag,
-        .hljs-name,
-        .hljs-regexp,
-        .hljs-link,
-        .hljs-name,
-        .hljs-selector-id,
-        .hljs-selector-class {
-            color: #f98181;
-        }
-
-        .hljs-number,
-        .hljs-meta,
-        .hljs-built_in,
-        .hljs-builtin-name,
-        .hljs-literal,
-        .hljs-type,
-        .hljs-params {
-            color: #fbbc88;
-        }
-
-        .hljs-string,
-        .hljs-symbol,
-        .hljs-bullet {
-            color: #b9f18d;
-        }
-
-        .hljs-title,
-        .hljs-section {
-            color: #faf594;
-        }
-
-        .hljs-keyword,
-        .hljs-selector-tag {
-            color: #70cff8;
-        }
-
-        .hljs-emphasis {
-            font-style: italic;
-        }
-
-        .hljs-strong {
-            font-weight: 700;
-        }
-    }
+/* optional class for removing the outline */
+.prism-editor__textarea:focus {
+  outline: none;
 }
 </style>
