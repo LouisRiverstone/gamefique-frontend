@@ -14,7 +14,7 @@
         de ajudar você docente a incrementar suas aulas!
       </div>
       <div class="col-md-6 offset-md-3 video">
-        <iframe
+        <!-- <iframe
           width="600"
           height="355"
           src="https://www.youtube.com/embed/5JKuhqa1yvY?controls=0&showinfo=0&modestbranding=1"
@@ -25,7 +25,7 @@
           rel="0"
           allow="clipboard-write; encrypted-media; picture-in-picture"
           allowfullscreen
-        ></iframe>
+        ></iframe> -->
       </div>
       <p class="col-md-6 offset-md-3 lead">
         <a
