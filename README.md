@@ -5,7 +5,7 @@ Gamefique foi pensado como uma plataforma online colaborativa que auxiliasse os 
 
 ## Instalação
 
-Use o modulo npm que vem na instalação do [pip](https://nodejs.org/en/) para rodar o projeto.
+Use o modulo npm que vem na instalação do [NodeJS](https://nodejs.org/en/) para rodar o projeto.
 
 ```bash
 npm install
