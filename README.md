@@ -17,7 +17,7 @@ npm install
 npm run serve
 ```
 
-## Contributing
+## Contribuição
 Pull-request são bem-vindos. Para grandes mudanças, abra um problema primeiro para discutir o que você gostaria de mudar.
 
 ## License
