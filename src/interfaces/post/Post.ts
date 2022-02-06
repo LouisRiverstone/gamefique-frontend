@@ -2,6 +2,7 @@ import { ClassPlan } from "./ClassPlan"
 import Like from "./Like"
 import User from "../store/User"
 import Comment from "../comment/Comment"
+import PostStatus from "./Status"
 
 export default interface Post {
   id: number;
@@ -18,7 +19,9 @@ export default interface Post {
   snippets: any[];
   class_plan: ClassPlan;
   user: User;
-  comments: Comment[];
+  post_status_id: number;
+  post_status: PostStatus
+  comments: Array<Comment>;
   tags: Array<Number>;
   html: string;
 }

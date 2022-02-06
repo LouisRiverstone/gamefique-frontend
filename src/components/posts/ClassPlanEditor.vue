@@ -7,7 +7,7 @@
       <div class="col-sm-12 col-md-12">
         <div class="row pb-4">
           <h5 class="mt-4 mb-4">Duração</h5>
-          <div><input v-model="class_plan.duration" /></div>
+          <div><input v-model="class_plan.duration" class="input-form" /></div>
         </div>
       </div>
     </div>
@@ -440,5 +440,12 @@ export default defineComponent({
 .remove {
   color: red;
   cursor: pointer;
+}
+.input-form {
+  background-color: #e7e7e7;
+  border: solid 2px transparent;
+  font-weight: 700;
+  height: calc(3.5rem + 2px);
+  padding: 1rem 0.75rem;
 }
 </style>

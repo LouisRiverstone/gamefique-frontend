@@ -2,8 +2,24 @@
   <section>
     <Form @submit="onSubmit" :validation-schema="schema" ref="form">
       <div class="bg mb-5 pb-4">
-        <div class="d-flex justify-content-left mb-5 ms-5">
-          <h2 class="text-white mt-5">Nova Publicação</h2>
+        <div class="d-flex flex-column justify-content-left mb-5 ms-5">
+          <div class="d-flex">
+            <h2 class="text-white mt-5">{{ name }}</h2>
+          </div>
+          <div
+            class="d-flex flex-row align-items-center"
+            v-if="post.post_status_id"
+          >
+            <small class="text-white">Status: </small>
+            <span
+              class="mx-2 badge rounded-pill bg-primary"
+              :class="{
+                'bg-warning': post.post_status_id == 1,
+                'bg-success': post.post_status_id == 2,
+              }"
+              >{{ post.post_status.description }}</span
+            >
+          </div>
         </div>
 
         <div class="header pt-5">
@@ -196,10 +212,12 @@ import PostValidation from "@/validations/post";
 import api from "@/api";
 
 import PostInterface from "@/interfaces/post/Post";
+import PostStatus from "@/interfaces/post/Status";
 import {
   ClassPlan as ClassPlanInterface,
   ClassPlanDescription as ClassPlanDescriptionInterface,
 } from "@/interfaces/post/ClassPlan";
+import Tag from "@/interfaces/tags/Tags";
 import User from "@/interfaces/store/User";
 
 export default defineComponent({
@@ -235,6 +253,9 @@ export default defineComponent({
     imageRef(): any {
       return this.$refs.image;
     },
+    name(): string {
+      return this.$route.params.id ? "Editar Publicação" : "Nova Publicação";
+    },
     post_tags: {
       get(): Array<unknown> {
         return this.post.tags || [];
@@ -267,11 +288,12 @@ export default defineComponent({
         } as unknown as ClassPlanInterface,
         temp_html: "",
         html: "",
+        post_status_id: null,
         tags: [] as Array<unknown>,
         snippets: [] as Array<unknown>,
       } as unknown as PostInterface,
       school_subjects: [],
-      tags: [],
+      tags: [] as Array<Tag>,
       toast: useToast(),
       loading: {
         save: false,
@@ -299,6 +321,8 @@ export default defineComponent({
 
         await this.publish(formData, data.id);
       }
+
+      window.location.reload();
     },
     async publish(post: PostInterface, id: number) {
       try {
@@ -317,17 +341,17 @@ export default defineComponent({
     async save(post: PostInterface, id: number | null) {
       try {
         this.loading.save = true;
+
+        const objectData = {
+          ...post,
+          ...{ snippets: this.post.snippets },
+        };
+
         if (id) {
-          const { data } = await api.post.update(id, {
-            ...post,
-            ...{ snippets: this.post.snippets },
-          });
+          const { data } = await api.post.update(id, objectData);
           return data;
         } else {
-          const { data } = await api.post.store({
-            ...post,
-            ...{ snippets: this.post.snippets },
-          });
+          const { data } = await api.post.store(objectData);
 
           this.$router.push({
             name: "PostEditing",
@@ -378,7 +402,7 @@ export default defineComponent({
       try {
         this.$emit("loading-show");
         this.school_subjects = (await api.school_subjects.list()).data;
-        this.tags = (await api.tags.list()).data;
+        this.tags = (await api.tags.list()).data as Array<Tag>;
         if (typeof this.id == "string") {
           const { data } = await api.post.get(parseInt(this.id));
 
@@ -400,7 +424,6 @@ export default defineComponent({
       }
     },
     setSnippets(snippets: any) {
-      console.error(snippets);
       this.post.snippets = snippets;
     },
     clickUpload() {
