@@ -320,9 +320,13 @@ export default defineComponent({
         }
 
         await this.publish(formData, data.id);
+
+        this.$router.push({ name: "PostUserList" });
+
+        return;
       }
 
-      window.location.reload();
+      this.$router.push({ name: "PostEditing", params: { id: data.id } });
     },
     async publish(post: PostInterface, id: number) {
       try {
@@ -350,14 +354,10 @@ export default defineComponent({
         if (id) {
           const { data } = await api.post.update(id, objectData);
           return data;
-        } else {
-          const { data } = await api.post.store(objectData);
-
-          this.$router.push({
-            name: "PostEditing",
-            params: { id: data.id },
-          });
         }
+
+        const { data } = await api.post.store(objectData);
+        return data;
       } catch (error) {
         console.error(error);
       } finally {

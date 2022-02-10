@@ -40,6 +40,7 @@ export default {
   async update({ commit, dispatch }: any, updateData: any) {
     try {
       const updated = await api.auth.update(updateData);
+      console.log(updated)
       dispatch('loadUser');
     } catch (error) {
       throw new Error(error);
